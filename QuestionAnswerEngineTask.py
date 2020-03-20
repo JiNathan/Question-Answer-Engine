@@ -129,7 +129,6 @@ def returnresult(text, question):
 
 
 
-
 print(returnresult(text2, question))
 
 
