@@ -1,0 +1,72 @@
+President Obama accepted the Nobel Peace Prize during a ceremony Thursday in Norway, acknowledging the paradox of receiving the award as the US is embroiled in two wars, while maintaining that instruments of war have a role in preserving peace
+ * Serving Flask app "Server" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+68.5.94.156 - - [27/Mar/2020 00:59:39] "[36mGET / HTTP/1.1[0m" 304 -
+68.5.94.156 - - [27/Mar/2020 01:01:03] "[37mGET / HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /vendor/fontawesome-free/css/all.min.css HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /css/freelancer.min.css HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /img/portfolio/cake.png HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /img/portfolio/cabin.png HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /vendor/jquery/jquery.min.js HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /img/portfolio/circus.png HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /vendor/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /vendor/jquery-easing/jquery.easing.min.js HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /img/portfolio/game.png HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /js/jqBootstrapValidation.js HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /js/contact_me.js HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /vendor/fontawesome-free/webfonts/fa-brands-400.woff2 HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /js/freelancer.min.js HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /js/result.js HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /img/portfolio/safe.png HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[37mGET /img/portfolio/submarine.png HTTP/1.1[0m" 200 -
+68.5.94.156 - - [27/Mar/2020 01:01:04] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET / HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /vendor/fontawesome-free/css/all.min.css HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /css/freelancer.min.css HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /img/portfolio/cabin.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /vendor/jquery/jquery.min.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /img/portfolio/cake.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /vendor/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /vendor/jquery-easing/jquery.easing.min.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /js/contact_me.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /js/jqBootstrapValidation.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /js/freelancer.min.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /js/result.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /img/portfolio/game.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /img/portfolio/circus.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /img/portfolio/safe.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /img/portfolio/submarine.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[37mGET /vendor/fontawesome-free/webfonts/fa-brands-400.woff2 HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:53] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET / HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /vendor/fontawesome-free/css/all.min.css HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /css/freelancer.min.css HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /img/portfolio/cabin.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /vendor/jquery/jquery.min.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /img/portfolio/circus.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /img/portfolio/cake.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /vendor/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /vendor/jquery-easing/jquery.easing.min.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /js/jqBootstrapValidation.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /js/contact_me.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /js/result.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /vendor/fontawesome-free/webfonts/fa-brands-400.woff2 HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /js/freelancer.min.js HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /img/portfolio/game.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /img/portfolio/safe.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[37mGET /img/portfolio/submarine.png HTTP/1.1[0m" 200 -
+174.76.17.66 - - [27/Mar/2020 01:03:58] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+171.67.70.85 - - [27/Mar/2020 01:21:16] "[37mGET / HTTP/1.1[0m" 200 -
+213.222.56.130 - - [27/Mar/2020 01:27:24] "[33mGET /w00tw00t.at.blackhats.romanian.anti-sec:) HTTP/1.1[0m" 404 -
+213.222.56.130 - - [27/Mar/2020 01:27:25] "[33mGET /phpMyAdmin/scripts/setup.php HTTP/1.1[0m" 404 -
+213.222.56.130 - - [27/Mar/2020 01:27:25] "[33mGET /phpmyadmin/scripts/setup.php HTTP/1.1[0m" 404 -
+213.222.56.130 - - [27/Mar/2020 01:27:25] "[33mGET /pma/scripts/setup.php HTTP/1.1[0m" 404 -
+213.222.56.130 - - [27/Mar/2020 01:27:26] "[33mGET /myadmin/scripts/setup.php HTTP/1.1[0m" 404 -
+213.222.56.130 - - [27/Mar/2020 01:27:26] "[33mGET /MyAdmin/scripts/setup.php HTTP/1.1[0m" 404 -
