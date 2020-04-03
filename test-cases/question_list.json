@@ -1,0 +1,23 @@
+[
+  {
+    "name" : "t1-q1",
+    "file" : "t1.txt",
+    "question" : "What is my name?"
+  },
+  {
+    "name" : "t1-q2",
+    "file" : "t1.txt",
+    "question" : "How old am I?"
+  },
+
+  {
+    "name" : "t2-q1",
+    "file" : "t2.txt",
+    "question" : "What is the name of the 6th president of the United States?"
+  },
+  {
+    "name" : "t2-q2",
+    "file" : "t2.txt",
+    "question" : "What was Obama doing during the war on terror"
+  }
+]
