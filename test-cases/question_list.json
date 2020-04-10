@@ -9,7 +9,11 @@
     "file" : "t1.txt",
     "question" : "How old am I?"
   },
-
+  {
+    "name" : "t1-q3",
+    "file" : "t1.txt",
+    "question" : "Where do I go to school?"
+  },
   {
     "name" : "t2-q1",
     "file" : "t2.txt",
@@ -19,5 +23,25 @@
     "name" : "t2-q2",
     "file" : "t2.txt",
     "question" : "What was Obama doing during the war on terror"
+  },
+  {
+    "name" : "t2-q3",
+    "file" : "t2.txt",
+    "question" : "Where does President Trump live?"
+  },
+  {
+    "name" : "t3-q1",
+    "file" : "t3.txt",
+    "question" : "Where did Obama receive the nobel peace prize?"
+  },
+  {
+    "name" : "t3-q2",
+    "file" : "t3.txt",
+    "question" : "How did Obama justify the wars against terror?"
+  },
+  {
+    "name" : "t3-q3",
+    "file" : "t3.txt",
+    "question" : "When is war justifiable according to Obama?"
   }
 ]

@@ -28,7 +28,18 @@ question = 'Where did obama accepted the Nobel Peace Prize'
 # print token, dependency, POS tag
 # for tok in doc:
 #   print(tok.text, "-->",tok.dep_,"-->", tok.pos_)
-
+def contains(a, b):
+    #checks substrings as well
+    if a == b:
+        return True
+    else:
+        for i in range(1, len(a)-1):
+            if a[i::] == b:
+                return True
+        for i in range(1, len(b)-1):
+            if b[i::] == a:
+                return True
+        return False
 def svoMatcher(doc):
     svopairs = []
     possiblepairs = []
@@ -72,30 +83,30 @@ def questionAnalysis(questiondoc):
            possiblepairs = []
     return svopairs
 
-def giveAnswer(svo_list, questiondoc):
-   questionsvo = questionAnalysis(questiondoc)
-   matches = {}
-   for i in svo_list:
-       matchrating = 0
-       possiblematch = []
-       for j in questionsvo:
-           if j[0] == i[0]:
-               matchrating += 1
-               if j[1] == i[1] or j[2] == i[2]:
-                   matchrating += 1
-                   if j[1] == i[1] and j[2] == i[2]:
-                       matchrating += 1
-                       possiblematch.append(j)
-                   else:
-                       possiblematch.append(j)
-               else:
-                   possiblematch.append(j)
-       matches[matchrating] = possiblematch
-   highestmatch = 0
-   for k in matches:
-       if k >= highestmatch:
-           highestmatch = k
-   return highestmatch
+# def giveAnswer(svo_list, questiondoc):
+#    questionsvo = questionAnalysis(questiondoc)
+#    matches = {}
+#    for i in svo_list:
+#        matchrating = 0
+#        possiblematch = []
+#        for j in questionsvo:
+#            if j[0] == i[0]:
+#                matchrating += 1
+#                if j[1] == i[1] or j[2] == i[2]:
+#                    matchrating += 1
+#                    if j[1] == i[1] and j[2] == i[2]:
+#                        matchrating += 1
+#                        possiblematch.append(j)
+#                    else:
+#                        possiblematch.append(j)
+#                else:
+#                    possiblematch.append(j)
+#        matches[matchrating] = possiblematch
+#    highestmatch = 0
+#    for k in matches:
+#        if k >= highestmatch:
+#            highestmatch = k
+#    return highestmatch
 
 def giveAnswerTwo(svo_list, questiondoc):
     questionsvo = questionAnalysis(questiondoc)
@@ -104,13 +115,20 @@ def giveAnswerTwo(svo_list, questiondoc):
         matchrating = 0
         possiblematch = []
         for j in questionsvo:
-            if i[0] in j:
-                matchrating += 1
-            if i[1] in j:
-                matchrating += 1
-            if i[2] in j:
-                matchrating += 1
-            possiblematch.append(j)
+            flaga = True
+            flagb = True
+            flagc = True
+            for p in j:
+                if contains(i[0], p) and flaga:
+                    matchrating += 1
+                    flaga = False
+                if contains(i[1], p) and flagb:
+                    matchrating += 1
+                    flagb = False
+                if contains(i[2], p) and flagc:
+                    matchrating += 1
+                    flagc = False
+                possiblematch.append(j)
         matches[matchrating] = possiblematch
     highestmatch = 0
     for k in matches:
@@ -152,6 +170,8 @@ def giveAnswerTwo(svo_list, questiondoc):
 # # doc = nlp(text)
 # questiondoc = nlp(question)
 def returnresult(text, question):
+    question = question.lower()
+    text = text.lower()
     questiondoc = nlp(question)
     sen_map = {}
     sentences = nltk.tokenize.sent_tokenize(text)
@@ -162,7 +182,7 @@ def returnresult(text, question):
     highest_score = 0
     highest_key = -1
     for k in sen_map:
-       h = giveAnswer(sen_map[k], questiondoc)
+       h = giveAnswerTwo(sen_map[k], questiondoc)
        if h >= highest_score:
            highest_score = h
            highest_key = k
