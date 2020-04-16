@@ -1,18 +1,9 @@
 import nltk
-nltk.download()
-from nltk.corpus import wordnet
-syns = wordnet.synsets("program")
-synonyms = []
-antonyms = []
+from nltk.corpus import wordnet as wn
+syns = wn.synsets("program")
+word1 = wn.synset('people.n.01')
+print(word1)
+word2 = wn.synset('person.n.01')
 
-for syn in wordnet.synsets("good"):
-    for l in syn.lemmas():
-        synonyms.append(l.name())
-        if l.antonyms():
-            antonyms.append(l.antonyms()[0].name())
-
-print(set(synonyms))
-print(set(antonyms))
-w1 = wordnet.synset('ship.n.01')
-w2 = wordnet.synset('boat.n.01')
-print(w1.wup_similarity(w2))
+print(word1.wup_similarity(word2))
+print(word1.path_similarity(word2))
