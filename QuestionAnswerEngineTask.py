@@ -49,16 +49,15 @@ def findnextitem(tok, possiblepairs, a):
     return 'none'
 def contains(a, b):
     #checks substrings as well
+    a = a.lower()
+    b = b.lower()
     if a == b:
         return True
     else:
-        for i in range(1, len(a)-1):
-            if a[i::] == b:
-                return True
-        for i in range(1, len(b)-1):
-            if b[i::] == a:
-                return True
-        return False
+        if a in b or b in a:
+            return True
+    return False
+
 def svoMatcher(doc):
     svopairs = []
     possiblepairs = [[],[]]
@@ -69,7 +68,6 @@ def svoMatcher(doc):
         else:
             if findnextitem(tok, possiblepairs, 1) != 'none':
                 possiblepairs[1].append(findnextitem(tok, possiblepairs, 1))
-        print(possiblepairs)
         if len(possiblepairs[0]) == 3:
             svopairs.append(possiblepairs[0])
             possiblepairs[0] = []
@@ -138,15 +136,15 @@ def giveAnswerTwo(svo_list, questiondoc):
     questionsvo = questionAnalysis(questiondoc)
     matches = {}
     for i in svo_list:
-        # i[0] = WordNetLemmatizer().lemmatize(i[0],'n')
-        # i[1] = WordNetLemmatizer().lemmatize(i[1],'v')
-        # i[2] = WordNetLemmatizer().lemmatize(i[2],'n')
+        i[0] = WordNetLemmatizer().lemmatize(i[0],'n')
+        i[1] = WordNetLemmatizer().lemmatize(i[1],'v')
+        i[2] = WordNetLemmatizer().lemmatize(i[2],'n')
         matchrating = 0
         possiblematch = []
         for j in questionsvo:
-            # j[0] = WordNetLemmatizer().lemmatize(j[0], 'n')
-            # j[1] = WordNetLemmatizer().lemmatize(j[1], 'v')
-            # j[2] = WordNetLemmatizer().lemmatize(j[2], 'n')
+            j[0] = WordNetLemmatizer().lemmatize(j[0], 'n')
+            j[1] = WordNetLemmatizer().lemmatize(j[1], 'v')
+            j[2] = WordNetLemmatizer().lemmatize(j[2], 'n')
             flaga = True
             flagb = True
             flagc = True
@@ -206,6 +204,7 @@ def TieBreak():
 # question = ''
 # # doc = nlp(text)
 # questiondoc = nlp(question)
+
 def returnresult(text, question):
     question = question.lower()
     text = text.lower()
@@ -218,6 +217,7 @@ def returnresult(text, question):
     question_svo = questionAnalysis(questiondoc)
     highest_score = 0
     highest_key = -1
+    svo_average = 0
     for k in sen_map:
        h = giveAnswerTwo(sen_map[k], questiondoc)
        if h >= highest_score:

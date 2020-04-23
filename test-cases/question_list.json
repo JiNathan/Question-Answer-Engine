@@ -30,6 +30,21 @@
     "question" : "Where does President Trump live?"
   },
   {
+    "name" : "t2.5-q1",
+    "file" : "t25.txt",
+    "question": "What percent of New York City's population has the Coronavirus?"
+  },
+  {
+    "name" : "t2.5-q2",
+    "file" : "t25.txt",
+    "question": "What kind of testing does New York City use?"
+  },
+  {
+    "name" : "t2.5-q3",
+    "file" : "t25.txt",
+    "question": "Who is New York City’s top official for disease control?"
+  },
+  {
     "name" : "t3-q1",
     "file" : "t3.txt",
     "question" : "Where did Obama receive the nobel peace prize?"
