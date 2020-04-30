@@ -13,10 +13,10 @@ for q in question_list:
     print("Testing ", q['name'])
 
     text_file_path = "test-cases/" + q['file']
-    with open(text_file_path, 'r') as file:
+    with open(text_file_path, 'r', encoding="utf8") as file:
         text_data = file.read()
 
-    res = QuestionAnswerEngineTask.returnresult(text_data, q['question'])
+    res = QuestionAnswerEngineTask.returnresult(text_data,  q['question'])
     print(q['question'])
     print(res)
     print()

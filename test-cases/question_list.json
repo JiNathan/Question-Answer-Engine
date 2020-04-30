@@ -32,7 +32,7 @@
   {
     "name" : "t2.5-q1",
     "file" : "t25.txt",
-    "question": "What percent of New York City's population has the Coronavirus?"
+    "question": "What percent of New York City population has the Coronavirus?"
   },
   {
     "name" : "t2.5-q2",
@@ -42,7 +42,7 @@
   {
     "name" : "t2.5-q3",
     "file" : "t25.txt",
-    "question": "Who is New York City’s top official for disease control?"
+    "question": "Who is New York City top official for disease control?"
   },
   {
     "name" : "t3-q1",

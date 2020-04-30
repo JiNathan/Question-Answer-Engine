@@ -21,7 +21,6 @@ merge_subtok = nlp.create_pipe("merge_subtokens")
 nlp.add_pipe(merge_nps)
 nlp.add_pipe(merge_ents)
 nlp.add_pipe(merge_subtok)
-text2 = 'President Obama accepted the Nobel Peace Prize during a ceremony Thursday in Norway, acknowledging the paradox of receiving the award as the US is embroiled in two wars, while maintaining that instruments of war have a role in preserving peace. In his acceptance speech, Obama told Nobel Committee members and guests in Oslo that achieving peace must begin with the recognition that the use of force is sometimes morally justified. Make no mistake: Evil does exist in the world. A nonviolent movement could not have halted Hitlers armies. Negotiations cannot convince al-Qaidas leaders to lay down their arms,"he told the crowd. It was just nine days ago that Obama announced he is sending an additional 30,000 U.S. troops to Afghanistan in an effort to step up training of Afghan security forces and root out insurgents operating on the border with Pakistan.'
 # doc = nlp(text2)
 quotetext = """President Obama accepted the Nobel Peace Prize during a ceremony Thursday in Norway, acknowledging the paradox of receiving the award as the U.S. is embroiled in two wars, while maintaining that instruments of war have a role in preserving peace. In his acceptance speech, Obama told Nobel Committee members and guests in Oslo that achieving peace must begin with the recognition that the use of force is sometimes morally justified. Make no mistake: Evil does exist in the world. A nonviolent movement could not have halted Hitler's armies. Negotiations cannot convince al-Qaida's leaders to lay down their arms," he told the crowd. It was just nine days ago that Obama announced he is sending an additional 30,000 U.S. troops to Afghanistan in an effort to step up training of Afghan security forces and root out insurgents operating on the border with Pakistan."""
 question = 'Where did obama accepted the Nobel Peace Prize'
@@ -30,6 +29,8 @@ question = 'Where did obama accepted the Nobel Peace Prize'
 # print token, dependency, POS tag
 # for tok in doc:
 #   print(tok.text, "-->",tok.dep_,"-->", tok.pos_)
+
+
 def pending(possiblepairs):
     if len(possiblepairs[0]) > 0 and len(possiblepairs[1]) > 0:
         return 2
@@ -48,15 +49,33 @@ def findnextitem(tok, possiblepairs, a):
         return(tok.text)
     return 'none'
 def contains(a, b):
-    #checks substrings as well
+    #returns boolean value
     a = a.lower()
     b = b.lower()
     if a == b:
         return True
-    else:
-        if a in b or b in a:
-            return True
-    return False
+    if a in b:
+        return True
+    words = a.split()
+    for i in (b.split()):
+        words.append(i)
+    a.replace(' ', '')
+    b.replace(' ', '')
+    possiblematches = []
+    tempmatch = []
+    for i in a:
+        if i in b:
+            tempmatch.append(i)
+        else:
+            possiblematches.append(tempmatch[0])
+            tempmatch = []
+    for i in b:
+        if i in a:
+            tempmatch.append(i)
+        else:
+            possiblematches.append(tempmatch[0])
+            tempmatch = []
+
 
 def svoMatcher(doc):
     svopairs = []
@@ -76,7 +95,6 @@ def svoMatcher(doc):
            svopairs.append(possiblepairs[1])
            possiblepairs[1] =[]
            pendingpairs = pending(possiblepairs)
-    print(svopairs)
     return svopairs
 
 def questionAnalysis(questiondoc):
@@ -132,10 +150,15 @@ def questionAnalysis(questiondoc):
 #            highestmatch = k
 #    return highestmatch
 
-def giveAnswerTwo(svo_list, questiondoc):
+def giveAnswerTwo(svo_list, questiondoc, text):
+    wordweightdict = wordweight(text)
+
     questionsvo = questionAnalysis(questiondoc)
     matches = {}
     for i in svo_list:
+        temp0 = i[0]
+        temp1 = i[1]
+        temp2 = i[2]
         i[0] = WordNetLemmatizer().lemmatize(i[0],'n')
         i[1] = WordNetLemmatizer().lemmatize(i[1],'v')
         i[2] = WordNetLemmatizer().lemmatize(i[2],'n')
@@ -150,13 +173,13 @@ def giveAnswerTwo(svo_list, questiondoc):
             flagc = True
             for p in j:
                 if contains(i[0], p) and flaga:
-                    matchrating += 1
+                    matchrating += returnWeight(temp0, wordweightdict)
                     flaga = False
                 if contains(i[1], p) and flagb:
-                    matchrating += 1
+                    matchrating += returnWeight(temp1, wordweightdict)
                     flagb = False
                 if contains(i[2], p) and flagc:
-                    matchrating += 1
+                    matchrating += returnWeight(temp2, wordweightdict)
                     flagc = False
                 possiblematch.append(j)
         matches[matchrating] = possiblematch
@@ -204,10 +227,59 @@ def TieBreak():
 # question = ''
 # # doc = nlp(text)
 # questiondoc = nlp(question)
+def wordweight(text):
+    text = text.lower()
+    text = text.split()
+    wordweightdict = {}
+    for i in text:
+        i = i.replace('.', '')
+        i = i.replace(',', '')
+        i = i.replace('!', '')
+        i = i.replace('?', '')
+        if i in wordweightdict:
+            wordweightdict[i] += 1
+        else:
+            wordweightdict[i] = 1
+    return wordweightdict
+
+def returnWeight(word, wordweightdict):
+    if ' ' in word:
+        word = word.split()
+        highesti = 0
+        for j in word:
+            i = wordweightdict[j]
+            if i == 1:
+                i = (1)
+            if i == 2 or i == 3:
+                i = (0.9)
+            if i in [4, 5, 6]:
+                i = (0.75)
+            if i in [7, 8, 9, 10]:
+                i = (0.5)
+            if i > 10:
+                i = (3/i)
+            if i > highesti:
+                highesti = i
+        return highesti
+    else:
+        i = wordweightdict[word]
+        if i == 1:
+            i = (1)
+        if i == 2 or i == 3:
+            i = (0.9)
+        if i in [4, 5, 6]:
+            i = (0.75)
+        if i in [7, 8, 9, 10]:
+            i = (0.5)
+        if i > 10:
+            i = (3 / i)
+        return i
 
 def returnresult(text, question):
     question = question.lower()
     text = text.lower()
+    wordweightdict = wordweight(text)
+    print(wordweightdict)
     questiondoc = nlp(question)
     sen_map = {}
     sentences = nltk.tokenize.sent_tokenize(text)
@@ -219,7 +291,7 @@ def returnresult(text, question):
     highest_key = -1
     svo_average = 0
     for k in sen_map:
-       h = giveAnswerTwo(sen_map[k], questiondoc)
+       h = giveAnswerTwo(sen_map[k], questiondoc, text)
        if h >= highest_score:
            highest_score = h
            highest_key = k
