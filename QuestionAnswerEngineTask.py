@@ -54,27 +54,60 @@ def contains(a, b):
     b = b.lower()
     if a == b:
         return True
-    if a in b:
+    if a in b or b in a:
         return True
     words = a.split()
     for i in (b.split()):
         words.append(i)
-    a.replace(' ', '')
-    b.replace(' ', '')
-    possiblematches = []
-    tempmatch = []
+    wordtest = set(words)
+    if len(wordtest) != len(words):
+        return True
+    return False
+
+def matchingAlg(a, b):
+    #returnsnumericvalue
+    a.lower()
+    b.lower()
+
+    return max(matchingSubAlg(a,b), matchingSubAlg(b,a))
+
+def matchingSubAlg(a,b):
+    a = a.replace(' ','')
+    b = b.replace(' ', '')
+    stopindex = len(b) - 1
+    if a in b or b in a:
+        return (min(len(a),len(b))//max(len(a),len(b)))
+    abcharmatch = []
+    counter = 0
+    pendingindex = 0
     for i in a:
-        if i in b:
-            tempmatch.append(i)
+        if counter >= 1:
+            pendingindex += 1
+            if pendingindex == stopindex:
+                abcharmatch.append(counter)
+                counter = 0
+                pendingindex = 0
+            if i == b[pendingindex]:
+                counter += 1
+            else:
+                abcharmatch.append(counter)
+                counter = 0
+                pendingindex = 0
+        elif i in b:
+            counter += 1
+            pendingindex = b.find(i)
+            if pendingindex == stopindex:
+                pendingindex = 0
         else:
-            possiblematches.append(tempmatch[0])
-            tempmatch = []
-    for i in b:
-        if i in a:
-            tempmatch.append(i)
-        else:
-            possiblematches.append(tempmatch[0])
-            tempmatch = []
+            abcharmatch.append(counter)
+            counter = 0
+            pendingindex = 0
+    abcharmatch.append(counter)
+    highestabmatch = 0
+    for i in abcharmatch:
+        if i/len(a) > highestabmatch:
+            highestabmatch = i/len(a)
+    return highestabmatch
 
 
 def svoMatcher(doc):
@@ -172,14 +205,15 @@ def giveAnswerTwo(svo_list, questiondoc, text):
             flagb = True
             flagc = True
             for p in j:
+
                 if contains(i[0], p) and flaga:
-                    matchrating += returnWeight(temp0, wordweightdict)
+                    matchrating += (returnWeight(temp0, wordweightdict) + matchingAlg(temp0, p))/2
                     flaga = False
                 if contains(i[1], p) and flagb:
-                    matchrating += returnWeight(temp1, wordweightdict)
+                    matchrating += (returnWeight(temp1, wordweightdict) + matchingAlg(temp1, p))/2
                     flagb = False
                 if contains(i[2], p) and flagc:
-                    matchrating += returnWeight(temp2, wordweightdict)
+                    matchrating += (returnWeight(temp2, wordweightdict) + matchingAlg(temp2, p))/2
                     flagc = False
                 possiblematch.append(j)
         matches[matchrating] = possiblematch
@@ -247,7 +281,10 @@ def returnWeight(word, wordweightdict):
         word = word.split()
         highesti = 0
         for j in word:
-            i = wordweightdict[j]
+            if j not in wordweightdict:
+                i = 1
+            else:
+                i = wordweightdict[j]
             if i == 1:
                 i = (1)
             if i == 2 or i == 3:
@@ -266,20 +303,23 @@ def returnWeight(word, wordweightdict):
         if i == 1:
             i = (1)
         if i == 2 or i == 3:
-            i = (0.9)
-        if i in [4, 5, 6]:
             i = (0.75)
+        if i in [4, 5, 6]:
+            i = (0.6)
         if i in [7, 8, 9, 10]:
             i = (0.5)
         if i > 10:
             i = (3 / i)
         return i
 
+def displayResults(highest_key, highest_score, sen_map, sentences):
+    print('Sentence key: ',highest_key,' Sentence score: ', highest_score)
+    print(sen_map[highest_key])
+
 def returnresult(text, question):
     question = question.lower()
     text = text.lower()
     wordweightdict = wordweight(text)
-    print(wordweightdict)
     questiondoc = nlp(question)
     sen_map = {}
     sentences = nltk.tokenize.sent_tokenize(text)
@@ -295,12 +335,9 @@ def returnresult(text, question):
        if h >= highest_score:
            highest_score = h
            highest_key = k
-
-#Printing Out Data:
-    print(sen_map)
-    print('Sentence Score: ', highest_score,'Sentence Key: ', highest_key)
-    print(sentences)
+    displayResults(highest_key, highest_score, sen_map, sentences)
     print(question_svo)
+    print(sen_map)
     if highest_score == 0:
         return 'There was no match'
     else:
