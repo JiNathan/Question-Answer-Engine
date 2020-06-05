@@ -65,49 +65,47 @@ def contains(a, b):
     return False
 
 def matchingAlg(a, b):
-    #returnsnumericvalue
     a.lower()
     b.lower()
+    return max(matchingSubAlg(a, b), matchingSubAlg(b, a))
+def matchingSubAlg(a, b):
+    a = simplify(a)
+    b = simplify(b)
+    if len(b) <= 1:
+        if a == b:
+            return 1
+        return 0
+    for i in createSubString(a):
+        if i == b:
+            return(len(i)/len(a))
+    return 0
 
-    return max(matchingSubAlg(a,b), matchingSubAlg(b,a))
+def simplify(a):
+    if len(a.split()) > 1:
+        tempa = nlp(a)
+        newa = []
+        for token in tempa:
+            if token.dep_ != 'compound' and token.dep_ != 'det':
+                newa.append(token)
+    else:
+        return a
+    a = ''
+    for i in newa:
+        i = str(i)
+        a = a + i
+    a.replace(' ', '')
+    return a
 
-def matchingSubAlg(a,b):
-    a = a.replace(' ','')
-    b = b.replace(' ', '')
-    stopindex = len(b) - 1
-    if a in b or b in a:
-        return (min(len(a),len(b))//max(len(a),len(b)))
-    abcharmatch = []
-    counter = 0
-    pendingindex = 0
-    for i in a:
-        if counter >= 1:
-            pendingindex += 1
-            if pendingindex == stopindex:
-                abcharmatch.append(counter)
-                counter = 0
-                pendingindex = 0
-            if i == b[pendingindex]:
-                counter += 1
-            else:
-                abcharmatch.append(counter)
-                counter = 0
-                pendingindex = 0
-        elif i in b:
-            counter += 1
-            pendingindex = b.find(i)
-            if pendingindex == stopindex:
-                pendingindex = 0
-        else:
-            abcharmatch.append(counter)
-            counter = 0
-            pendingindex = 0
-    abcharmatch.append(counter)
-    highestabmatch = 0
-    for i in abcharmatch:
-        if i/len(a) > highestabmatch:
-            highestabmatch = i/len(a)
-    return highestabmatch
+print(simplify('president obama'))
+
+def createSubString(a):
+    a.replace(' ','')
+    substrings = []
+    for i in range(len(a)):
+        substrings.append(a[i:])
+    return substrings
+
+
 
 
 def svoMatcher(doc):
@@ -192,20 +190,19 @@ def giveAnswerTwo(svo_list, questiondoc, text):
         temp0 = i[0]
         temp1 = i[1]
         temp2 = i[2]
-        i[0] = WordNetLemmatizer().lemmatize(i[0],'n')
-        i[1] = WordNetLemmatizer().lemmatize(i[1],'v')
-        i[2] = WordNetLemmatizer().lemmatize(i[2],'n')
+        # i[0] = WordNetLemmatizer().lemmatize(i[0],'n')
+        # i[1] = WordNetLemmatizer().lemmatize(i[1],'v')
+        # i[2] = WordNetLemmatizer().lemmatize(i[2],'n')
         matchrating = 0
         possiblematch = []
         for j in questionsvo:
-            j[0] = WordNetLemmatizer().lemmatize(j[0], 'n')
-            j[1] = WordNetLemmatizer().lemmatize(j[1], 'v')
-            j[2] = WordNetLemmatizer().lemmatize(j[2], 'n')
+            # j[0] = WordNetLemmatizer().lemmatize(j[0], 'n')
+            # j[1] = WordNetLemmatizer().lemmatize(j[1], 'v')
+            # j[2] = WordNetLemmatizer().lemmatize(j[2], 'n')
             flaga = True
             flagb = True
             flagc = True
             for p in j:
-
                 if contains(i[0], p) and flaga:
                     matchrating += (returnWeight(temp0, wordweightdict) + matchingAlg(temp0, p))/2
                     flaga = False
@@ -279,7 +276,7 @@ def wordweight(text):
 def returnWeight(word, wordweightdict):
     if ' ' in word:
         word = word.split()
-        highesti = 0
+        average = []
         for j in word:
             if j not in wordweightdict:
                 i = 1
@@ -295,9 +292,14 @@ def returnWeight(word, wordweightdict):
                 i = (0.5)
             if i > 10:
                 i = (3/i)
-            if i > highesti:
-                highesti = i
-        return highesti
+            if len(word) > 1:
+                average.append(i)
+            else:
+                return i
+        sum = 0
+        for i in average:
+            sum += i
+        return (sum/len(average))
     else:
         i = wordweightdict[word]
         if i == 1:

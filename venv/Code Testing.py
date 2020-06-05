@@ -1,10 +1,10 @@
-# import nltk
-# import math
-# import spacy
-# from nltk.corpus import wordnet as wn
-# from nltk.stem import WordNetLemmatizer
-# lemmatizer = WordNetLemmatizer()
-# nlp = spacy.load("en_core_web_sm")
+import nltk
+import math
+import spacy
+from nltk.corpus import wordnet as wn
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
+nlp = spacy.load("en_core_web_sm")
 # syns = wn.synsets("program")
 # # # word1 = wn.synset('bad.n.01')
 # # # word2 = wn.synset('good.n.01')
@@ -86,5 +86,116 @@
 # print(wordweight('the war was not very cool. in fact, the war was not cool at all. the war. the war'))
 # print(p)
 
-if 'i' in 'portola high school':
-    print('true')
+def matchingAlg2(a, b):
+    a.lower()
+    b.lower()
+    return max(matchingSubAlg(a, b), matchingSubAlg(b, a))
+def matchingSubAlg(a, b):
+    a = simplify(a)
+    b = simplify(b)
+    print(a,b)
+    if len(b) <= 1:
+        if a == b:
+            return 1
+        return 0
+    for i in createSubString(a):
+        if i == b:
+            return(len(i)/len(a))
+    return 0
+
+def simplify(a):
+    if len(a.split()) > 1:
+        tempa = nlp(a)
+        newa = []
+        for tok in tempa:
+            if tok.dep_ != 'compound' and tok.dep_ != 'det':
+                newa.append(tok)
+    else:
+        return a
+    a = ''
+    for i in newa:
+        i = str(i)
+        a = a + i
+    a.replace(' ', '')
+    return a
+#
+# def countOcc(a,b):
+#     #a is string b is char:
+#     counter = 0
+#     for i in a:
+#         if a == b:
+#             counter += 1
+#     return counter
+
+def createSubString(a):
+    a.replace(' ','')
+    substrings = []
+    for i in range(len(a)):
+        substrings.append(a[i:])
+    return substrings
+
+
+print(simplify('president obama'))
+
+#cornercase 3: tuciko nuioioae and uioioae
+#
+# def matchingAlg(a, b):
+#     #returnsnumericvalue
+#     a.lower()
+#     b.lower()
+#     return max(matchingSubAlg(a,b), matchingSubAlg(b,a))
+#
+# def matchingSubAlg(a,b):
+#     # tempnewa = []
+#     # if len(a.split()) > 1:
+#     #     tempa = nlp(a)
+#     #     for i in tempa:
+#     #         if i.dep_ != 'compound':
+#     #             tempnewa.append(i)
+#     # newa = ''
+#     # for i in tempnewa:
+#     #     i = str(i)
+#     #     newa = newa + i
+#     a = a.replace(' ','')
+#     b = b.replace(' ', '')
+#     if len(b) <= 1:
+#         if a == b:
+#             return 1
+#         return 0
+#     stopindex = len(b) - 1
+#     abcharmatch = []
+#     counter = 0
+#     pendingindex = 0
+#     for i in a:
+#         if counter >= 1:
+#             pendingindex += 1
+#             if pendingindex == stopindex:
+#                 abcharmatch.append(counter)
+#                 counter = 0
+#                 pendingindex = 0
+#             if i == b[pendingindex]:
+#                 counter += 1
+#             else:
+#                 abcharmatch.append(counter)
+#                 counter = 0
+#                 pendingindex = 0
+#         elif i in b:
+#             counter += 1
+#             pendingindex = b.find(i)
+#             if pendingindex == stopindex:
+#                 pendingindex = 0
+#         else:
+#             abcharmatch.append(counter)
+#             counter = 0
+#             pendingindex = 0
+#     abcharmatch.append(counter)
+#     highestabmatch = 0
+#     for i in abcharmatch:
+#         if i/len(a) > highestabmatch:
+#             highestabmatch = i/len(a)
+#     #checks compound (president obama) - (obama)
+#     # checka = newa.replace(' ', '')
+#     # if checka != a:
+#     #     if matchingAlg(newa, b) > highestabmatch:
+#     #         return matchingAlg(newa, b)
+#     return highestabmatch
