@@ -2,61 +2,73 @@
   {
     "name" : "t1-q1",
     "file" : "t1.txt",
-    "question" : "What is my name?"
+    "question" : "What is my name?",
+    "Answer" : "my name is nathan ji."
   },
   {
     "name" : "t1-q2",
     "file" : "t1.txt",
-    "question" : "How old am I?"
+    "question" : "How old am I?",
+    "Answer" : "i am 14 years old."
   },
   {
     "name" : "t1-q3",
     "file" : "t1.txt",
-    "question" : "Where do I go to school?"
+    "question" : "Where do I go to school?",
+    "Answer" : "i go to portola high school."
   },
   {
     "name" : "t2-q1",
     "file" : "t2.txt",
-    "question" : "What is the name of the 6th president of the United States?"
+    "question" : "What is the name of the 6th president of the United States?",
+    "Answer" : "there was no match"
   },
   {
     "name" : "t2-q2",
     "file" : "t2.txt",
-    "question" : "What was Obama doing during the war on terror"
+    "question" : "What was Obama doing during the war on terror",
+    "Answer" : "there was no match"
   },
   {
     "name" : "t2-q3",
     "file" : "t2.txt",
-    "question" : "Where does President Trump live?"
+    "question" : "Where does President Trump live?",
+    "Answer" : "there was no match"
   },
   {
     "name" : "t2.5-q1",
     "file" : "t25.txt",
-    "question": "What percent of New York City population has the Coronavirus?"
+    "question": "What percent of New York City population has the Coronavirus?",
+    "Answer" : "in new york city, about 21 percent tested positive for coronavirus antibodies during the state survey."
   },
   {
     "name" : "t2.5-q2",
     "file" : "t25.txt",
-    "question": "What kind of testing does New York City use?"
+    "question": "What kind of testing does New York City use?",
+    "Answer" : "While the reliability of some early antibody tests has been widely questioned, researchers in New York have worked in recent weeks to develop and validate their own antibody tests, with federal approval. "
   },
   {
     "name" : "t2.5-q3",
     "file" : "t25.txt",
-    "question": "Who is New York City top official for disease control?"
+    "question": "Who is New York City top official for disease control?",
+    "Answer" : "dr. demetre c. daskalakis, the city’s top official for disease control, wrote in an email alert on Wednesday that such tests “may produce false negative or false positive results,” pointing to “significant voids” in using the science to pinpoint immunity."
   },
   {
     "name" : "t3-q1",
     "file" : "t3.txt",
-    "question" : "Where did Obama receive the nobel peace prize?"
+    "question" : "Where did Obama receive the nobel peace prize?",
+    "Answer" : "president obama accepted the nobel peace prize during a ceremony thursday in norway, acknowledging the paradox of receiving the award as the u.s. is embroiled in two wars, while maintaining that instruments of war have a role in preserving peace"
   },
   {
     "name" : "t3-q2",
     "file" : "t3.txt",
-    "question" : "How did Obama justify the wars against terror?"
+    "question" : "How did Obama justify the wars against terror?",
+    "Answer" : "The president said war is justified in cases of self-defense, when civilians are being slaughtered by their own government, or a civil war threatens to engulf an entire region."
   },
   {
     "name" : "t3-q3",
     "file" : "t3.txt",
-    "question" : "When is war justifiable according to Obama?"
+    "question" : "When is war justifiable according to Obama?",
+    "Answer" : "The president said war is justified in cases of self-defense, when civilians are being slaughtered by their own government, or a civil war threatens to engulf an entire region."
   }
 ]

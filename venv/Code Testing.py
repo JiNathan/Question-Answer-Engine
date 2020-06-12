@@ -248,6 +248,33 @@ def createSubString(a):
 #['obama', 'justify', 'the wars'] ['war', 'justified', 'self-defense']
 #['justifiable', 'according', 'obama'] ['war', 'justified', 'self-defense']
 
-print(matchingAlg('what percent', 'about 21 percent'))
-print(simplify(''))
-print(simplify('war'))
+def questionAnalysis(questiondoc):
+    svopairs = []
+    possiblepairs = []
+    for tok in questiondoc:
+       print(tok, ' -> ', tok.dep_, ' -> ',tok.pos_)
+       if (tok.dep_ == 'nsubj' or tok.dep_ == 'nsubjpass') and len(possiblepairs) == 0:
+           possiblepairs.append(tok.text)
+       if (tok.pos_ == 'VERB' or tok.pos_ == 'AUX' or tok.pos_ == 'AUXPASS') and len(possiblepairs) == 1:
+           possiblepairs.append(tok.text)
+       if (tok.dep_ == 'dobj' or tok.dep_ == 'pobj' or tok.dep_ == 'attr' or tok.dep_ == 'acomp') and len(
+               possiblepairs) == 2:
+           possiblepairs.append(tok.text)
+       if len(possiblepairs) == 3:
+           svopairs.append(possiblepairs)
+           possiblepairs = []
+    possiblepairs = []
+    for tok in questiondoc:
+       if (tok.dep_ == 'nsubj' or tok.dep_ == 'nsubjpass') and len(possiblepairs) == 2:
+           possiblepairs.append(tok.text)
+       if (tok.pos_ == 'VERB' or tok.pos_ == 'AUX' or tok.pos_ == 'AUXPASS') and len(possiblepairs) == 1:
+           possiblepairs.append(tok.text)
+       if (tok.dep_ == 'dobj' or tok.dep_ == 'pobj' or tok.dep_ == 'attr' or tok.dep_ == 'acomp') and len(
+               possiblepairs) == 0:
+           possiblepairs.append(tok.text)
+       if len(possiblepairs) == 3:
+           svopairs.append(possiblepairs)
+           possiblepairs = []
+    return svopairs
+questionDoc = nlp('What kind of testing does New York City use?')
+questionAnalysis(questionDoc)

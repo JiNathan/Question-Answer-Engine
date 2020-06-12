@@ -297,10 +297,16 @@ def returnWeight(word, wordweightdict):
                 average.append(i)
             else:
                 return i
-        sum = 0
+        lowest = 0
+        sum=0
         for i in average:
+            if i < lowest:
+                lowest = i
             sum += i
-        return (sum/len(average))
+        sum -= lowest
+        return (sum/(len(average) - 1))
+
+
     else:
         i = wordweightdict[word]
         if i == 1:
@@ -318,6 +324,8 @@ def returnWeight(word, wordweightdict):
 def displayResults(highest_key, highest_score, sen_map, sentences):
     print('Sentence key: ',highest_key,' Sentence score: ', highest_score)
     print(sen_map[highest_key])
+    print(sen_map)
+    print('------------------------------------')
 
 def returnresult(text, question):
     question = question.lower()
