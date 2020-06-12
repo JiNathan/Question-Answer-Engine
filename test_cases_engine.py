@@ -16,7 +16,7 @@ for q in question_list:
     with open(text_file_path, 'r', encoding="utf8") as file:
         text_data = file.read()
 
-    res = QuestionAnswerEngineTask.returnresult(text_data,  q['question'])
+    res = QuestionAnswerEngineTask.returnresult(text_data,  q['question'], 3)
     print(q['question'])
     print(res)
     print()

@@ -327,7 +327,7 @@ def displayResults(highest_key, highest_score, sen_map, sentences):
     print(sen_map)
     print('------------------------------------')
 
-def returnresult(text, question):
+def returnresult(text, question, numofanswers):
     question = question.lower()
     text = text.lower()
     wordweightdict = wordweight(text)
@@ -355,8 +355,13 @@ def returnresult(text, question):
     if highest_score == 0:
         return 'There was no match'
     else:
-        print('2nd: ', sort_scores[1], sentences[sort_scores[1][0]])
-        print('3rd: ', sort_scores[2], sentences[sort_scores[2][0]])
-        return '1st: ' + sentences[highest_key]
+        returnlist = []
+        for i in range(numofanswers):
+            returnlist.append(sort_scores[i])
+        return returnlist
+
+    print('1st: ', sort_scores[0], sentences[sort_scores[1][0]])
+    print('2nd: ', sort_scores[1], sentences[sort_scores[1][0]])
+    print('3rd: ', sort_scores[2], sentences[sort_scores[2][0]])
 
 # print(returnresult(text2, question))
