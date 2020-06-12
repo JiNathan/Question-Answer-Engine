@@ -85,7 +85,7 @@ def simplify(a):
         tempa = nlp(a)
         newa = []
         for token in tempa:
-            if token.dep_ != 'compound' and token.dep_ != 'det':
+            if token.dep_ != 'det' and token.dep_ != 'nummod' and token.dep_ != 'advmod':
                 newa.append(token)
     else:
         return a
@@ -103,6 +103,7 @@ def createSubString(a):
     substrings = []
     for i in range(len(a)):
         substrings.append(a[i:])
+        substrings.append(a[:i])
     return substrings
 
 
@@ -190,27 +191,27 @@ def giveAnswerTwo(svo_list, questiondoc, text):
         temp0 = i[0]
         temp1 = i[1]
         temp2 = i[2]
-        # i[0] = WordNetLemmatizer().lemmatize(i[0],'n')
-        # i[1] = WordNetLemmatizer().lemmatize(i[1],'v')
-        # i[2] = WordNetLemmatizer().lemmatize(i[2],'n')
+        i[0] = WordNetLemmatizer().lemmatize(i[0],'n')
+        i[1] = WordNetLemmatizer().lemmatize(i[1],'v')
+        i[2] = WordNetLemmatizer().lemmatize(i[2],'n')
         matchrating = 0
         possiblematch = []
         for j in questionsvo:
-            # j[0] = WordNetLemmatizer().lemmatize(j[0], 'n')
-            # j[1] = WordNetLemmatizer().lemmatize(j[1], 'v')
-            # j[2] = WordNetLemmatizer().lemmatize(j[2], 'n')
+            j[0] = WordNetLemmatizer().lemmatize(j[0], 'n')
+            j[1] = WordNetLemmatizer().lemmatize(j[1], 'v')
+            j[2] = WordNetLemmatizer().lemmatize(j[2], 'n')
             flaga = True
             flagb = True
             flagc = True
             for p in j:
                 if contains(i[0], p) and flaga:
-                    matchrating += (returnWeight(temp0, wordweightdict) + matchingAlg(temp0, p))/2
+                    matchrating += (returnWeight(temp0, wordweightdict) + matchingAlg(temp0, p) * 2)/3
                     flaga = False
                 if contains(i[1], p) and flagb:
-                    matchrating += (returnWeight(temp1, wordweightdict) + matchingAlg(temp1, p))/2
+                    matchrating += (returnWeight(temp1, wordweightdict) + matchingAlg(temp1, p)*2)/3
                     flagb = False
                 if contains(i[2], p) and flagc:
-                    matchrating += (returnWeight(temp2, wordweightdict) + matchingAlg(temp2, p))/2
+                    matchrating += (returnWeight(temp2, wordweightdict) + matchingAlg(temp2, p)*2)/3
                     flagc = False
                 possiblematch.append(j)
         matches[matchrating] = possiblematch
@@ -332,17 +333,22 @@ def returnresult(text, question):
     highest_score = 0
     highest_key = -1
     svo_average = 0
+    scores = {}
     for k in sen_map:
        h = giveAnswerTwo(sen_map[k], questiondoc, text)
+       scores[k] = h
        if h >= highest_score:
            highest_score = h
            highest_key = k
     displayResults(highest_key, highest_score, sen_map, sentences)
     print(question_svo)
-    print(sen_map)
+    sort_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+
     if highest_score == 0:
         return 'There was no match'
     else:
-        return sentences[highest_key]
+        print('2nd: ', sort_scores[1], sentences[sort_scores[1][0]])
+        print('3rd: ', sort_scores[2], sentences[sort_scores[2][0]])
+        return '1st: ' + sentences[highest_key]
 
 # print(returnresult(text2, question))

@@ -135,7 +135,6 @@ def createSubString(a):
     return substrings
 
 
-print(simplify('president obama'))
 
 #cornercase 3: tuciko nuioioae and uioioae
 #
@@ -199,3 +198,56 @@ print(simplify('president obama'))
 #     #     if matchingAlg(newa, b) > highestabmatch:
 #     #         return matchingAlg(newa, b)
 #     return highestabmatch
+def matchingAlg(a, b):
+    a.lower()
+    b.lower()
+    return max(matchingSubAlg(a, b), matchingSubAlg(b, a))
+def matchingSubAlg(a, b):
+    a = simplify(a)
+    b = simplify(b)
+    if len(b) <= 1:
+        if a == b:
+            return 1
+        return 0
+    for i in createSubString(a):
+        print(i)
+        if i == b:
+            return(len(i)/len(a))
+    return 0
+
+def simplify(a):
+    if len(a.split()) > 1:
+        tempa = nlp(a)
+        newa = []
+        for token in tempa:
+            if token.dep_ != 'nummod' and token.dep_ != 'advmod':
+                newa.append(token)
+    else:
+        return a
+    a = ''
+    for i in newa:
+        i = str(i)
+        a = a + i
+    a.replace(' ', '')
+    return a
+
+def createSubString(a):
+    a.replace(' ','')
+    substrings = []
+    for i in range(len(a)):
+        substrings.append(a[i:])
+        substrings.append(a[:i])
+    return substrings
+#correct Matches:
+
+# 'about 21 percent', 'tested', 'coronavirus antibodies'] ['what percent', 'has', 'the coronavirus']
+# Question 2 has No Question SVO
+#'who', 'is', 'new york city top official'] ['dr. demetre c. daskalakis', 'wrote', 'an email alert']
+
+#['president obama', 'accepted', 'the nobel peace prize']['obama', 'receive', 'the nobel peace prize']
+#['obama', 'justify', 'the wars'] ['war', 'justified', 'self-defense']
+#['justifiable', 'according', 'obama'] ['war', 'justified', 'self-defense']
+
+print(matchingAlg('what percent', 'about 21 percent'))
+print(simplify(''))
+print(simplify('war'))
