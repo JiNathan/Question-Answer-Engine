@@ -357,7 +357,7 @@ def returnresult(text, question, numofanswers):
     else:
         returnlist = []
         for i in range(numofanswers):
-            returnlist.append(sort_scores[i])
+            returnlist.append(sentences[sort_scores[i][0]])
         return returnlist
 
     print('1st: ', sort_scores[0], sentences[sort_scores[1][0]])
