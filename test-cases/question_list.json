@@ -51,7 +51,7 @@
     "name" : "t2.5-q3",
     "file" : "t25.txt",
     "question": "Who is New York City top official for disease control?",
-    "Answer" : "dr. demetre c. daskalakis, the city’s top official for disease control, wrote in an email alert on Wednesday that such tests “may produce false negative or false positive results,” pointing to “significant voids” in using the science to pinpoint immunity."
+    "Answer" : "dir. demetre c. daskalakis, the city’s top official for dsease control, wrote in an email alert on Wednesday that such tests “may produce false negative or false positive results,” pointing to “significant voids” in using the science to pinpoint immunity."
   },
   {
     "name" : "t3-q1",
@@ -70,5 +70,42 @@
     "file" : "t3.txt",
     "question" : "When is war justifiable according to Obama?",
     "Answer" : "The president said war is justified in cases of self-defense, when civilians are being slaughtered by their own government, or a civil war threatens to engulf an entire region."
+  },
+  {
+    "name" : "t4-q1",
+    "file" : "t4.txt",
+    "question" : "What reopening Phase is New York on?",
+    "Answer": "Amid concerns about a coronavirus resurgence, New York City will enter a limited fourth phase of reopening on Monday, allowing some art and entertainment venues, like zoos and botanical gardens, to open for outdoor activities at a limited capacity, officials announced on Friday."
+  },
+  {
+    "name" : "t4-q2",
+    "file" : "t4.txt",
+    "question" : "What was in Cuomo’s executive order?",
+    "Answer" : "Last month, Gov. Andrew M. Cuomo put in place an executive order that requires travelers from 22 states with high infection rates to quarantine for 14 days upon arrival."
+  },
+  {
+    "name" : "t4-q3",
+    "file" : "t4.txt",
+    "question" : "What activities does phase 4 not restore?",
+    "Answer" : "But concerned about the virus’s spreading more rapidly in dense and crowded New York City, Mr. Cuomo said that Phase 4 of reopening in the city would not restore any additional indoor activities — even though other regions of the state further along in reopening have done so, for example, by allowing indoor dining at up to half capacity."
+  },
+  {
+    "name" : "t5-q1",
+    "file" : "t5.txt",
+    "question" : "How many army bases have Confederate generals named after them?",
+    "Answer" : "Ten Army bases that honor Confederate generals who fought to defend the slaveholding South have been the focus of a growing movement for change."
+  },
+  {
+    "name" : "t5-q2",
+    "file" : "t5.txt",
+    "question" : "What other kind of flags are not allowed by the new directive?",
+    "Answer" : "A Defense Department official said that the new directive meant that Black Lives Matter and L.G.B.T.Q. flags would not be allowed, either."
+  },
+  {
+    "name" : "t5-q3",
+    "file" : "t5.txt",
+    "question" : "Did the Marine Corps ban the confederate flag first?",
+    "Answer" : "The Marine Corps this year banned the Confederate flag, and the Army was moving to do the same until Mr. Esper intervened, saying that he wanted to issue uniform guidance across all services."
   }
+
 ]

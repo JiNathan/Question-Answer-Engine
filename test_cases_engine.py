@@ -3,7 +3,7 @@ import QuestionAnswerEngineTask
 
 question_list_file_path = "test-cases/question_list.json"
 
-with open(question_list_file_path, 'r') as file:
+with open(question_list_file_path, 'r',  encoding="utf8") as file:
     data = file.read()
 
 question_list = json.loads(data)

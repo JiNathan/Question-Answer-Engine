@@ -4,6 +4,7 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 import spacy
 import pandas as pd
+import spacyMatching
 import numpy as np
 import math
 from tqdm import tqdm
@@ -29,7 +30,8 @@ question = 'Where did obama accepted the Nobel Peace Prize'
 # print token, dependency, POS tag
 # for tok in doc:
 #   print(tok.text, "-->",tok.dep_,"-->", tok.pos_)
-
+subjects = ("nsubj", "nsubjpass", "csubj", "csubjpass", "agent", "expl")
+objects = ("dobj", "dative", "attr", "oprd", "pobj", "acomp")
 
 def pending(possiblepairs):
     if len(possiblepairs[0]) > 0 and len(possiblepairs[1]) > 0:
@@ -75,6 +77,8 @@ def matchingSubAlg(a, b):
         if a == b:
             return 1
         return 0
+    if b in a:
+        return len(b)/len(a)
     for i in createSubString(a):
         if i == b:
             return(len(i)/len(a))
@@ -82,21 +86,17 @@ def matchingSubAlg(a, b):
 
 def simplify(a):
     if len(a.split()) > 1:
-        tempa = nlp(a)
+        useless = ['a', 'the', 'an']
         newa = []
-        for token in tempa:
-            if token.dep_ != 'det' and token.dep_ != 'nummod' and token.dep_ != 'advmod':
-                newa.append(token)
+        for i in (a.split()):
+            if i not in useless:
+                newa.append(i)
+        returnvalue = ''
+        for i in newa:
+            returnvalue += i
+        return returnvalue
     else:
         return a
-    a = ''
-    for i in newa:
-        i = str(i)
-        a = a + i
-    a.replace(' ', '')
-    return a
-
-print(simplify('president obama'))
 
 def createSubString(a):
     a.replace(' ','')
@@ -105,8 +105,6 @@ def createSubString(a):
         substrings.append(a[i:])
         substrings.append(a[:i])
     return substrings
-
-
 
 
 def svoMatcher(doc):
@@ -129,16 +127,15 @@ def svoMatcher(doc):
            pendingpairs = pending(possiblepairs)
     return svopairs
 
-def questionAnalysis(questiondoc):
+def questionAnalysis(questiondoc, subjects, objects):
     svopairs = []
     possiblepairs = []
     for tok in questiondoc:
-       if (tok.dep_ == 'nsubj' or tok.dep_ == 'nsubjpass') and len(possiblepairs) == 0:
+       if (tok.dep_ in subjects) and len(possiblepairs) == 0:
            possiblepairs.append(tok.text)
        if (tok.pos_ == 'VERB' or tok.pos_ == 'AUX' or tok.pos_ == 'AUXPASS') and len(possiblepairs) == 1:
            possiblepairs.append(tok.text)
-       if (tok.dep_ == 'dobj' or tok.dep_ == 'pobj' or tok.dep_ == 'attr' or tok.dep_ == 'acomp') and len(
-               possiblepairs) == 2:
+       if (tok.dep_ in objects) and len(possiblepairs) == 2:
            possiblepairs.append(tok.text)
        if len(possiblepairs) == 3:
            svopairs.append(possiblepairs)
@@ -157,6 +154,8 @@ def questionAnalysis(questiondoc):
            possiblepairs = []
     return svopairs
 
+def questionWithoutSub(questiondoc):
+    pass
 # def giveAnswer(svo_list, questiondoc):
 #    questionsvo = questionAnalysis(questiondoc)
 #    matches = {}
@@ -185,7 +184,7 @@ def questionAnalysis(questiondoc):
 def giveAnswerTwo(svo_list, questiondoc, text):
     wordweightdict = wordweight(text)
 
-    questionsvo = questionAnalysis(questiondoc)
+    questionsvo = questionAnalysis(questiondoc, subjects, objects)
     matches = {}
     for i in svo_list:
         temp0 = i[0]
@@ -205,13 +204,13 @@ def giveAnswerTwo(svo_list, questiondoc, text):
             flagc = True
             for p in j:
                 if contains(i[0], p) and flaga:
-                    matchrating += (returnWeight(temp0, wordweightdict) + matchingAlg(temp0, p) * 2)/3
+                    matchrating += ((spacyMatching.matching(i[0], p) * 2) + (returnWeight(temp0, wordweightdict)))/3
                     flaga = False
                 if contains(i[1], p) and flagb:
-                    matchrating += (returnWeight(temp1, wordweightdict) + matchingAlg(temp1, p)*2)/3
+                    matchrating += ((spacyMatching.matching(i[1], p) * 2) + (returnWeight(temp1, wordweightdict)))/3
                     flagb = False
                 if contains(i[2], p) and flagc:
-                    matchrating += (returnWeight(temp2, wordweightdict) + matchingAlg(temp2, p)*2)/3
+                    matchrating += ((spacyMatching.matching(i[2], p) * 2) + (returnWeight(temp2, wordweightdict)))/3
                     flagc = False
                 possiblematch.append(j)
         matches[matchrating] = possiblematch
@@ -337,7 +336,7 @@ def returnresult(text, question, numofanswers):
     for i in range(len(sentences)):
        tokened = nlp(sentences[i])
        sen_map[i] = svoMatcher(tokened)
-    question_svo = questionAnalysis(questiondoc)
+    question_svo = questionAnalysis(questiondoc, subjects, objects)
     highest_score = 0
     highest_key = -1
     svo_average = 0
@@ -358,10 +357,10 @@ def returnresult(text, question, numofanswers):
         returnlist = []
         for i in range(numofanswers):
             returnlist.append(sort_scores[i])
+        print('1st: ', sort_scores[0], sentences[sort_scores[0][0]])
+        print('2nd: ', sort_scores[1], sentences[sort_scores[1][0]])
+        print('3rd: ', sort_scores[2], sentences[sort_scores[2][0]])
         return returnlist
 
-    print('1st: ', sort_scores[0], sentences[sort_scores[1][0]])
-    print('2nd: ', sort_scores[1], sentences[sort_scores[1][0]])
-    print('3rd: ', sort_scores[2], sentences[sort_scores[2][0]])
 
 # print(returnresult(text2, question))

@@ -1,10 +1,18 @@
 import nltk
 import math
 import spacy
+nlp = spacy.load('en_core_web_sm')
 from nltk.corpus import wordnet as wn
+merge_nps = nlp.create_pipe("merge_noun_chunks")
+merge_ents = nlp.create_pipe("merge_entities")
+merge_subtok = nlp.create_pipe("merge_subtokens")
+nlp.add_pipe(merge_nps)
+nlp.add_pipe(merge_ents)
+nlp.add_pipe(merge_subtok)
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
-nlp = spacy.load("en_core_web_sm")
+
+
 # syns = wn.synsets("program")
 # # # word1 = wn.synset('bad.n.01')
 # # # word2 = wn.synset('good.n.01')
@@ -198,46 +206,8 @@ def createSubString(a):
 #     #     if matchingAlg(newa, b) > highestabmatch:
 #     #         return matchingAlg(newa, b)
 #     return highestabmatch
-def matchingAlg(a, b):
-    a.lower()
-    b.lower()
-    return max(matchingSubAlg(a, b), matchingSubAlg(b, a))
-def matchingSubAlg(a, b):
-    a = simplify(a)
-    b = simplify(b)
-    if len(b) <= 1:
-        if a == b:
-            return 1
-        return 0
-    for i in createSubString(a):
-        print(i)
-        if i == b:
-            return(len(i)/len(a))
-    return 0
 
-def simplify(a):
-    if len(a.split()) > 1:
-        tempa = nlp(a)
-        newa = []
-        for token in tempa:
-            if token.dep_ != 'nummod' and token.dep_ != 'advmod':
-                newa.append(token)
-    else:
-        return a
-    a = ''
-    for i in newa:
-        i = str(i)
-        a = a + i
-    a.replace(' ', '')
-    return a
 
-def createSubString(a):
-    a.replace(' ','')
-    substrings = []
-    for i in range(len(a)):
-        substrings.append(a[i:])
-        substrings.append(a[:i])
-    return substrings
 #correct Matches:
 
 # 'about 21 percent', 'tested', 'coronavirus antibodies'] ['what percent', 'has', 'the coronavirus']
@@ -247,34 +217,143 @@ def createSubString(a):
 #['president obama', 'accepted', 'the nobel peace prize']['obama', 'receive', 'the nobel peace prize']
 #['obama', 'justify', 'the wars'] ['war', 'justified', 'self-defense']
 #['justifiable', 'according', 'obama'] ['war', 'justified', 'self-defense']
+#
+# def questionAnalysis(questiondoc):
+#     subject = ['nsubj','nsubjpass' ]
+#     verb = ['VERB', 'AUX', 'AUXPASS']
+#     object= ['dobj', 'pobj', 'attr', 'acomp']
+#     svopairs = []
+#     pending = {}
+#     numpending = 0
+#     for tok in questiondoc:
+#         if tok.dep_ in subject:
+#             flag = True
+#             for i in range(numpending):
+#                 if len(pending) == 0:
+#                     break
+#                 if flag:
+#                     if len(pending[i]) == 2:
+#                         flag = False
+#                         pending[i].append(tok.text)
+#         if tok.pos_ in verb:
+#             flag = True
+#             for i in range(numpending):
+#                 if len(pending) == 0:
+#                     break
+#                 if flag:
+#                     if len(pending[i]) == 1:
+#                         flag = False
+#                         pending[i].append(tok.text)
+#         if tok.dep_ in object:
+#             pending[numpending] = [tok.text]
+#             numpending += 1
+#         remove = ''
+#         for i in pending:
+#             for i in range(numpending):
+#                 if len(pending[i]) == 3:
+#                     svopairs.append(pending[i])
+#                     numpending -= 1
+#                     remove = i
+#         if remove != '':
+#             pending.pop(remove)
+#         remove = ''
+#     pending = {}
+#     for tok in questiondoc:
+#         if tok.dep_ in subject:
+#             pending[numpending] = [tok.text]
+#             numpending += 1
+#         if tok.pos_ in verb:
+#             flag = True
+#             for i in range(numpending):
+#                 if len(pending) == 0:
+#                     break
+#                 if flag:
+#                     if len(pending[i]) == 1:
+#                         flag = False
+#                         pending[i].append(tok.text)
+#         if tok.dep_ in object:
+#             flag = True
+#             for i in range(numpending):
+#                 if len(pending) == 0:
+#                     break
+#                 if flag:
+#                     if len(pending[i]) == 2:
+#                         flag = False
+#                         pending[i].append(tok.text)
+#         remove = ''
+#         for i in pending:
+#             for i in range(numpending):
+#                 if len(pending[i]) == 3:
+#                     svopairs.append(pending[i])
+#                     numpending -= 1
+#                     remove = i
+#         if remove != '':
+#             pending.pop(remove)
+#         remove = ''
+#     return svopairs
+# questionDoc = nlp('What kind of testing does New York City use?')
+# questionAnalysis(questionDoc)
 
-def questionAnalysis(questiondoc):
-    svopairs = []
-    possiblepairs = []
-    for tok in questiondoc:
-       print(tok, ' -> ', tok.dep_, ' -> ',tok.pos_)
-       if (tok.dep_ == 'nsubj' or tok.dep_ == 'nsubjpass') and len(possiblepairs) == 0:
-           possiblepairs.append(tok.text)
-       if (tok.pos_ == 'VERB' or tok.pos_ == 'AUX' or tok.pos_ == 'AUXPASS') and len(possiblepairs) == 1:
-           possiblepairs.append(tok.text)
-       if (tok.dep_ == 'dobj' or tok.dep_ == 'pobj' or tok.dep_ == 'attr' or tok.dep_ == 'acomp') and len(
-               possiblepairs) == 2:
-           possiblepairs.append(tok.text)
-       if len(possiblepairs) == 3:
-           svopairs.append(possiblepairs)
-           possiblepairs = []
-    possiblepairs = []
-    for tok in questiondoc:
-       if (tok.dep_ == 'nsubj' or tok.dep_ == 'nsubjpass') and len(possiblepairs) == 2:
-           possiblepairs.append(tok.text)
-       if (tok.pos_ == 'VERB' or tok.pos_ == 'AUX' or tok.pos_ == 'AUXPASS') and len(possiblepairs) == 1:
-           possiblepairs.append(tok.text)
-       if (tok.dep_ == 'dobj' or tok.dep_ == 'pobj' or tok.dep_ == 'attr' or tok.dep_ == 'acomp') and len(
-               possiblepairs) == 0:
-           possiblepairs.append(tok.text)
-       if len(possiblepairs) == 3:
-           svopairs.append(possiblepairs)
-           possiblepairs = []
-    return svopairs
-questionDoc = nlp('What kind of testing does New York City use?')
-questionAnalysis(questionDoc)
+
+# def matchingAlg(a, b):
+#     a.lower()
+#     b.lower()
+#     return max(matchingSubAlg(a, b), matchingSubAlg(b, a))
+# def matchingSubAlg(a, b):
+#     a = simplify(a)
+#     b = simplify(b)
+#     if len(b) <= 1:
+#         if a == b:
+#             return 1
+#         return 0
+#     if b in a:
+#         return len(b)/len(a)
+#     for i in createSubString(a):
+#         if i == b:
+#             return(len(i)/len(a))
+#     return 0
+#
+# def simplify(a):
+#     if len(a.split()) > 1:
+#         useless = ['a', 'the', 'an']
+#         newa = []
+#         for i in (a.split()):
+#             if i not in useless:
+#                 newa.append(i)
+#         returnvalue = ''
+#         for i in newa:
+#             returnvalue += i
+#         return returnvalue
+#     else:
+#         return a
+#
+# def createSubString(a):
+#     a.replace(' ','')
+#     substrings = []
+#     for i in range(len(a)):
+#         substrings.append(a[i:])
+#         substrings.append(a[:i])
+#     return substrings
+#
+#
+# def spacyMatching(a, b):
+#     words = a + ' ' + b
+#     tokens = nlp(words)
+#     token1, token2= tokens[0], tokens[1]
+#     return token1.similarity(token2)
+#
+# print(spacyMatching('the wars', 'war'))
+# print(matchingAlg('the wars', 'war'))
+
+
+# 'about 21 percent', 'tested', 'coronavirus antibodies'] ['what percent', 'has', 'the coronavirus']
+# Question 2 has No Question SVO
+#'who', 'is', 'new york city top official'] ['dr. demetre c. daskalakis', 'wrote', 'an email alert']
+
+#['president obama', 'accepted', 'the nobel peace prize']['obama', 'receive', 'the nobel peace prize']
+#['obama', 'justify', 'the wars'] ['war', 'justified', 'self-defense']
+#['justifiable', 'according', 'obama'] ['war', 'justified', 'self-defense']
+text = 'What kind of testing does New York City use?'
+doc = nlp(text)
+for tok in doc.noun_chunks:
+    print(tok.text, tok.root.pos_, tok.root.dep_, ' ------------- ', tok.root.head.text)
