@@ -360,6 +360,9 @@ def returnresult(text, question, numofanswers):
         print('1st: ', sort_scores[0], sentences[sort_scores[0][0]])
         print('2nd: ', sort_scores[1], sentences[sort_scores[1][0]])
         print('3rd: ', sort_scores[2], sentences[sort_scores[2][0]])
+
+            returnlist.append(sentences[sort_scores[i][0]])
+
         return returnlist
 
 
