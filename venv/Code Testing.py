@@ -10,6 +10,8 @@ nlp.add_pipe(merge_nps)
 nlp.add_pipe(merge_ents)
 nlp.add_pipe(merge_subtok)
 from nltk.stem import WordNetLemmatizer
+import numpy
+
 lemmatizer = WordNetLemmatizer()
 
 
@@ -353,7 +355,162 @@ def createSubString(a):
 #['president obama', 'accepted', 'the nobel peace prize']['obama', 'receive', 'the nobel peace prize']
 #['obama', 'justify', 'the wars'] ['war', 'justified', 'self-defense']
 #['justifiable', 'according', 'obama'] ['war', 'justified', 'self-defense']
-text = 'What kind of testing does New York City use?'
-doc = nlp(text)
-for tok in doc.noun_chunks:
-    print(tok.text, tok.root.pos_, tok.root.dep_, ' ------------- ', tok.root.head.text)
+subjects = ("nsubj", "nsubjpass", "csubj", "csubjpass", "agent", "expl")
+objects = ("dobj", "dative", "attr", "oprd", "pobj", "acomp")
+def findSVOind(doc):
+    subjects = ("nsubj", "nsubjpass", "csubj", "csubjpass", "agent", "expl")
+    objects = ("dobj", "dative", "attr", "oprd", "pobj", "acomp")
+    verbs = ("VERB", "AUX", "AUXPASS")
+    sub = {}
+    verb = {}
+    obj = {}
+    counter = -1
+    for tok in doc:
+        counter += 1
+        if tok.dep_ in subjects:
+            sub[tok.text] = counter
+        if tok.dep_ in objects:
+            obj[tok.text] = counter
+        if tok.pos_ in verbs:
+            verb[tok.text] = counter
+    return [sub, verb, obj, counter]
+
+def findSVOinpoints(point1, point2, sub, verb, obj):
+    pairs = []
+    print(point1, point2, sub,verb, obj)
+    for i in range(point1, point2):
+        print(i)
+        possiblepair = [list(sub.keys())[point1]]
+        if i in verb.values():
+            print(list(verb.keys())[list(verb.values()).index(i)])
+            possiblepair.append(list(verb.keys())[list(verb.values()).index(i)])
+            for j in range(i, point2):
+                print(j, 'j')
+                if j in obj.values():
+                    print(list(obj.keys())[list(obj.values()).index(j)])
+                    possiblepair.append(list(obj.keys())[list(obj.values()).index(j)])
+                if len(possiblepair) == 3:
+                    if possiblepair not in pairs:
+                        print(possiblepair)
+                        copypossible = possiblepair.copy()
+                        pairs.append(copypossible)
+                        possiblepair.pop(2)
+    print(pairs)
+    return pairs
+
+def svoMatcher(doc):
+    temp = findSVOind(doc)
+    sub, verb, obj, length = temp[0], temp[1], temp[2], temp[3]
+    svopairs = []
+    print(sub)
+    flag = False
+    #find first two points
+    if len(sub) == 0:
+        #return something here
+        return 0
+    point1 = list(sub.values())[0]
+    if len(sub) == 1:
+        point2 = length + 1
+        flag = True
+    else:
+        point2 = list(sub.values())[1]
+    for i in sub:
+        if i != point1:
+            if i == point2 or flag:
+                print('here')
+                flag = False
+                #run procedure for 2 given points
+                if len(findSVOinpoints(point1, point2, sub,verb,obj)) > 0:
+                    for j in findSVOinpoints(point1, point2, sub,verb,obj):
+                        svopairs.append(j)
+            else:
+                #run procedure for adjusting point 2 to point 1 and making a new point 2
+                temp = point2
+                point1 = temp
+                point2 = sub[i]
+                if len(findSVOinpoints(point1, point2, sub,verb,obj)) > 0:
+                    for j in findSVOinpoints(point1, point2, sub,verb,obj):
+                        svopairs.append(j)
+    return svopairs
+#I traveled and walked around the world (SVVO)
+#I traveled to London and Avoided Paris (SVOVO)
+# (SVOO)
+
+
+
+# Program to measure the similarity between
+# two sentences using cosine similarity.
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+# X = input("Enter first string: ").lower()
+# Y = input("Enter second string: ").lower()
+X = "Flag"
+Y = "Banner"
+def match(X, Y):
+    # tokenization
+    X_list = word_tokenize(X)
+    Y_list = word_tokenize(Y)
+
+    # sw contains the list of stopwords
+    sw = stopwords.words('english')
+    l1 = [];
+    l2 = []
+
+    # remove stop words from the string
+    X_set = {w for w in X_list if not w in sw}
+    Y_set = {w for w in Y_list if not w in sw}
+
+    # form a set containing keywords of both strings
+    rvector = X_set.union(Y_set)
+    for w in rvector:
+        if w in X_set:
+            l1.append(1)  # create a vector
+        else:
+            l1.append(0)
+        if w in Y_set:
+            l2.append(1)
+        else:
+            l2.append(0)
+    c = 0
+
+    # cosine formula
+    for i in range(len(rvector)):
+        c += l1[i] * l2[i]
+    cosine = c / float((sum(l1) * sum(l2)) ** 0.5)
+    return("similarity: ", cosine)
+#correctanswer: 0.1825741
+import gensim
+from nltk.tokenize import sent_tokenize, word_tokenize
+from sklearn.metrics.pairwise import cosine_similarity
+from gensim.models import Word2Vec
+import gensim.downloader as api
+wv = api.load('word2vec-google-news-300')
+
+def avg_sentence_vector(words, model, num_features, index2word_set):
+    #function to average all words vectors in a given paragraph
+    featureVec = numpy.zeros((num_features,), dtype="float32")
+    nwords = 0
+
+    for word in words:
+        if word in index2word_set:
+            nwords = nwords+1
+            featureVec = numpy.add(featureVec, model[word])
+
+    if nwords>0:
+        featureVec = numpy.divide(featureVec, nwords)
+    return featureVec
+
+# print(model2.n_similarity('president obama', 'obama'))
+
+
+
+# #get average vector for sentence 1
+sentence_1 = "this is sentence number one"
+sentence_1_avg_vector = avg_sentence_vector(sentence_1.split(), model=wv, num_features=100, index2word_set = wv.index2word)
+# #get average vector for sentence 2
+sentence_2 = "this is sentence number two"
+sentence_2_avg_vector = avg_sentence_vector(sentence_2.split(), model=wv, num_features=100, index2word_set = wv.index2word)
+
+sen1_sen2_similarity =  cosine_similarity(sentence_1_avg_vector,sentence_2_avg_vector)
+print(sen1_sen2_similarity)

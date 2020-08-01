@@ -105,26 +105,105 @@ def createSubString(a):
         substrings.append(a[i:])
         substrings.append(a[:i])
     return substrings
+# First Version of SVO Matcher
+#
+# def svoMatcher(doc):
+#     svopairs = []
+#     possiblepairs = [[],[]]
+#     pendingpairs = 1
+#     for tok in doc:
+#         if findnextitem(tok, possiblepairs, 0) != 'none':
+#             possiblepairs[0].append(findnextitem(tok, possiblepairs, 0))
+#         else:
+#             if findnextitem(tok, possiblepairs, 1) != 'none':
+#                 possiblepairs[1].append(findnextitem(tok, possiblepairs, 1))
+#         if len(possiblepairs[0]) == 3:
+#             svopairs.append(possiblepairs[0])
+#             if findnextitem(tok, possiblepairs, 0) != 'none':
+#                 temp = possiblepairs[0]
+#                 temp.remove(temp[0][2])
+#                 temp[0].append(findnextitem(tok, temp, 0))
+#                 if len(temp[0]) == 3:
+#                     svopairs.append(temp)
+#             possiblepairs[0] = []
+#             pendingpairs = pending(possiblepairs)
+#         elif len(possiblepairs[1]) == 3:
+#            svopairs.append(possiblepairs[1])
+#            if findnextitem(tok, possiblepairs, 0) != 'none':
+#                temp = possiblepairs[1]
+#                temp.remove(temp[1][2])
+#                temp[1].append(findnextitem(tok, temp, 1))
+#                if len(temp[1]) == 3:
+#                    svopairs.append(temp)
+#            possiblepairs[1] =[]
+#            pendingpairs = pending(possiblepairs)
+#     return svopairs
+def findSVOind(doc):
+    subjects = ("nsubj", "nsubjpass", "csubj", "csubjpass", "agent", "expl")
+    objects = ("dobj", "dative", "attr", "oprd", "pobj", "acomp")
+    verbs = ("VERB", "AUX", "AUXPASS")
+    sub = {}
+    verb = {}
+    obj = {}
+    counter = -1
+    for tok in doc:
+        counter += 1
+        if tok.dep_ in subjects:
+            sub[tok.text] = counter
+        if tok.dep_ in objects:
+            obj[tok.text] = counter
+        if tok.pos_ in verbs:
+            verb[tok.text] = counter
+    return [sub, verb, obj, counter]
 
+def findSVOinpoints(point1, point2, sub, verb, obj):
+    pairs = []
+    for i in range(point1, point2):
+        possiblepair = [list(sub.keys())[list(sub.values()).index(point1)]]
+        if i in verb.values():
+            possiblepair.append(list(verb.keys())[list(verb.values()).index(i)])
+            for j in range(i, point2):
+                if j in obj.values():
+                    possiblepair.append(list(obj.keys())[list(obj.values()).index(j)])
+                if len(possiblepair) == 3:
+                    if possiblepair not in pairs:
+                        copypossible = possiblepair.copy()
+                        pairs.append(copypossible)
+                        possiblepair.pop(2)
+    return pairs
 
 def svoMatcher(doc):
+    doc = nlp(doc)
+    temp = findSVOind(doc)
+    sub, verb, obj, length = temp[0], temp[1], temp[2], temp[3]
     svopairs = []
-    possiblepairs = [[],[]]
-    pendingpairs = 1
-    for tok in doc:
-        if findnextitem(tok, possiblepairs, 0) != 'none':
-            possiblepairs[0].append(findnextitem(tok, possiblepairs, 0))
-        else:
-            if findnextitem(tok, possiblepairs, 1) != 'none':
-                possiblepairs[1].append(findnextitem(tok, possiblepairs, 1))
-        if len(possiblepairs[0]) == 3:
-            svopairs.append(possiblepairs[0])
-            possiblepairs[0] = []
-            pendingpairs = pending(possiblepairs)
-        elif len(possiblepairs[1]) == 3:
-           svopairs.append(possiblepairs[1])
-           possiblepairs[1] =[]
-           pendingpairs = pending(possiblepairs)
+    flag = False
+    #find first two points
+    if len(sub) == 0:
+        #return something here
+        return []
+    point1 = list(sub.values())[0]
+    if len(sub) == 1:
+        point2 = length + 1
+        flag = True
+    else:
+        point2 = list(sub.values())[1]
+    for i in sub:
+        if i != point1:
+            if i == point2 or flag:
+                flag = False
+                #run procedure for 2 given points
+                if len(findSVOinpoints(point1, point2, sub,verb,obj)) > 0:
+                    for j in findSVOinpoints(point1, point2, sub,verb,obj):
+                        svopairs.append(j)
+            else:
+                #run procedure for adjusting point 2 to point 1 and making a new point 2
+                temp = point2
+                point1 = temp
+                point2 = sub[i]
+                if len(findSVOinpoints(point1, point2, sub,verb,obj)) > 0:
+                    for j in findSVOinpoints(point1, point2, sub,verb,obj):
+                        svopairs.append(j)
     return svopairs
 
 def questionAnalysis(questiondoc, subjects, objects):
@@ -183,7 +262,6 @@ def questionWithoutSub(questiondoc):
 
 def giveAnswerTwo(svo_list, questiondoc, text):
     wordweightdict = wordweight(text)
-
     questionsvo = questionAnalysis(questiondoc, subjects, objects)
     matches = {}
     for i in svo_list:
@@ -329,13 +407,15 @@ def displayResults(highest_key, highest_score, sen_map, sentences):
 def returnresult(text, question, numofanswers):
     question = question.lower()
     text = text.lower()
+    quotelesstext = text.replace('“', "").replace('”',"")
     wordweightdict = wordweight(text)
     questiondoc = nlp(question)
     sen_map = {}
-    sentences = nltk.tokenize.sent_tokenize(text)
+    doc = nlp(text)
+    sentences = [sent.string.strip() for sent in doc.sents]
     for i in range(len(sentences)):
-       tokened = nlp(sentences[i])
-       sen_map[i] = svoMatcher(tokened)
+       # tokened = nlp(sentences[i])
+       sen_map[i] = svoMatcher(sentences[i])
     question_svo = questionAnalysis(questiondoc, subjects, objects)
     highest_score = 0
     highest_key = -1
@@ -356,14 +436,12 @@ def returnresult(text, question, numofanswers):
     else:
         returnlist = []
         for i in range(numofanswers):
-            returnlist.append(sort_scores[i])
+            returnlist.append(sentences[sort_scores[i][0]])
         print('1st: ', sort_scores[0], sentences[sort_scores[0][0]])
         print('2nd: ', sort_scores[1], sentences[sort_scores[1][0]])
         print('3rd: ', sort_scores[2], sentences[sort_scores[2][0]])
-
-            returnlist.append(sentences[sort_scores[i][0]])
-
-        return returnlist
+        returnlist.append(sentences[sort_scores[i][0]])
+    return returnlist
 
 
 # print(returnresult(text2, question))
