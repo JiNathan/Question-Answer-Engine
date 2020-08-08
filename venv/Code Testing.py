@@ -514,3 +514,65 @@ sentence_2_avg_vector = avg_sentence_vector(sentence_2.split(), model=wv, num_fe
 
 sen1_sen2_similarity =  cosine_similarity(sentence_1_avg_vector,sentence_2_avg_vector)
 print(sen1_sen2_similarity)
+
+
+def questionWithoutSub(questiondoc):
+    pass
+# def giveAnswer(svo_list, questiondoc):
+#    questionsvo = questionAnalysis(questiondoc)
+#    matches = {}
+#    for i in svo_list:
+#        matchrating = 0
+#        possiblematch = []
+#        for j in questionsvo:
+#            if j[0] == i[0]:
+#                matchrating += 1
+#                if j[1] == i[1] or j[2] == i[2]:
+#                    matchrating += 1
+#                    if j[1] == i[1] and j[2] == i[2]:
+#                        matchrating += 1
+#                        possiblematch.append(j)
+#                    else:
+#                        possiblematch.append(j)
+#                else:
+#                    possiblematch.append(j)
+#        matches[matchrating] = possiblematch
+#    highestmatch = 0
+#    for k in matches:
+#        if k >= highestmatch:
+#            highestmatch = k
+#    return highestmatch
+
+# First Version of SVO Matcher
+#
+# def svoMatcher(doc):
+#     svopairs = []
+#     possiblepairs = [[],[]]
+#     pendingpairs = 1
+#     for tok in doc:
+#         if findnextitem(tok, possiblepairs, 0) != 'none':
+#             possiblepairs[0].append(findnextitem(tok, possiblepairs, 0))
+#         else:
+#             if findnextitem(tok, possiblepairs, 1) != 'none':
+#                 possiblepairs[1].append(findnextitem(tok, possiblepairs, 1))
+#         if len(possiblepairs[0]) == 3:
+#             svopairs.append(possiblepairs[0])
+#             if findnextitem(tok, possiblepairs, 0) != 'none':
+#                 temp = possiblepairs[0]
+#                 temp.remove(temp[0][2])
+#                 temp[0].append(findnextitem(tok, temp, 0))
+#                 if len(temp[0]) == 3:
+#                     svopairs.append(temp)
+#             possiblepairs[0] = []
+#             pendingpairs = pending(possiblepairs)
+#         elif len(possiblepairs[1]) == 3:
+#            svopairs.append(possiblepairs[1])
+#            if findnextitem(tok, possiblepairs, 0) != 'none':
+#                temp = possiblepairs[1]
+#                temp.remove(temp[1][2])
+#                temp[1].append(findnextitem(tok, temp, 1))
+#                if len(temp[1]) == 3:
+#                    svopairs.append(temp)
+#            possiblepairs[1] =[]
+#            pendingpairs = pending(possiblepairs)
+#     return svopairs

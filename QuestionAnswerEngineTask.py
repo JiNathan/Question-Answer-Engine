@@ -1,3 +1,4 @@
+#Imports
 import re
 import string
 import nltk
@@ -12,6 +13,9 @@ from spacy.pipeline import merge_entities
 from spacy.matcher import Matcher
 from spacy.tokens import Span
 from spacy import displacy
+import gensim.downloader as api
+#initalization
+wv = api.load('word2vec-google-news-300')
 lemmatizer = WordNetLemmatizer()
 nltk.download('punkt')
 pd.set_option('display.max_colwidth', 200)
@@ -105,39 +109,7 @@ def createSubString(a):
         substrings.append(a[i:])
         substrings.append(a[:i])
     return substrings
-# First Version of SVO Matcher
-#
-# def svoMatcher(doc):
-#     svopairs = []
-#     possiblepairs = [[],[]]
-#     pendingpairs = 1
-#     for tok in doc:
-#         if findnextitem(tok, possiblepairs, 0) != 'none':
-#             possiblepairs[0].append(findnextitem(tok, possiblepairs, 0))
-#         else:
-#             if findnextitem(tok, possiblepairs, 1) != 'none':
-#                 possiblepairs[1].append(findnextitem(tok, possiblepairs, 1))
-#         if len(possiblepairs[0]) == 3:
-#             svopairs.append(possiblepairs[0])
-#             if findnextitem(tok, possiblepairs, 0) != 'none':
-#                 temp = possiblepairs[0]
-#                 temp.remove(temp[0][2])
-#                 temp[0].append(findnextitem(tok, temp, 0))
-#                 if len(temp[0]) == 3:
-#                     svopairs.append(temp)
-#             possiblepairs[0] = []
-#             pendingpairs = pending(possiblepairs)
-#         elif len(possiblepairs[1]) == 3:
-#            svopairs.append(possiblepairs[1])
-#            if findnextitem(tok, possiblepairs, 0) != 'none':
-#                temp = possiblepairs[1]
-#                temp.remove(temp[1][2])
-#                temp[1].append(findnextitem(tok, temp, 1))
-#                if len(temp[1]) == 3:
-#                    svopairs.append(temp)
-#            possiblepairs[1] =[]
-#            pendingpairs = pending(possiblepairs)
-#     return svopairs
+
 def findSVOind(doc):
     subjects = ("nsubj", "nsubjpass", "csubj", "csubjpass", "agent", "expl")
     objects = ("dobj", "dative", "attr", "oprd", "pobj", "acomp")
@@ -233,33 +205,6 @@ def questionAnalysis(questiondoc, subjects, objects):
            possiblepairs = []
     return svopairs
 
-def questionWithoutSub(questiondoc):
-    pass
-# def giveAnswer(svo_list, questiondoc):
-#    questionsvo = questionAnalysis(questiondoc)
-#    matches = {}
-#    for i in svo_list:
-#        matchrating = 0
-#        possiblematch = []
-#        for j in questionsvo:
-#            if j[0] == i[0]:
-#                matchrating += 1
-#                if j[1] == i[1] or j[2] == i[2]:
-#                    matchrating += 1
-#                    if j[1] == i[1] and j[2] == i[2]:
-#                        matchrating += 1
-#                        possiblematch.append(j)
-#                    else:
-#                        possiblematch.append(j)
-#                else:
-#                    possiblematch.append(j)
-#        matches[matchrating] = possiblematch
-#    highestmatch = 0
-#    for k in matches:
-#        if k >= highestmatch:
-#            highestmatch = k
-#    return highestmatch
-
 def giveAnswerTwo(svo_list, questiondoc, text):
     wordweightdict = wordweight(text)
     questionsvo = questionAnalysis(questiondoc, subjects, objects)
@@ -282,13 +227,13 @@ def giveAnswerTwo(svo_list, questiondoc, text):
             flagc = True
             for p in j:
                 if contains(i[0], p) and flaga:
-                    matchrating += ((spacyMatching.matching(i[0], p) * 2) + (returnWeight(temp0, wordweightdict)))/3
+                    matchrating += ((spacyMatching.matching(i[0], p, wv) * 2) + (returnWeight(temp0, wordweightdict)))/3
                     flaga = False
                 if contains(i[1], p) and flagb:
-                    matchrating += ((spacyMatching.matching(i[1], p) * 2) + (returnWeight(temp1, wordweightdict)))/3
+                    matchrating += ((spacyMatching.matching(i[1], p, wv) * 2) + (returnWeight(temp1, wordweightdict)))/3
                     flagb = False
                 if contains(i[2], p) and flagc:
-                    matchrating += ((spacyMatching.matching(i[2], p) * 2) + (returnWeight(temp2, wordweightdict)))/3
+                    matchrating += ((spacyMatching.matching(i[2], p, wv) * 2) + (returnWeight(temp2, wordweightdict)))/3
                     flagc = False
                 possiblematch.append(j)
         matches[matchrating] = possiblematch
@@ -398,50 +343,99 @@ def returnWeight(word, wordweightdict):
             i = (3 / i)
         return i
 
+def remove_dot_acronym(s):
+    m = re.search('(.*?)(([a-zA-Z]\.){2,})(.*)', s)
+    if m:
+        replacement = ''.join(m.group(2).split('.'))
+        s = m.group(1) + replacement + m.group(4)
+        return s
+    else:
+        return m
+
+def remove_abbrev(text):
+    temp = remove_dot_acronym(text)
+    while temp != None:
+        text = temp
+        
+        temp = remove_dot_acronym(text)
+
+    text = re.sub(r"(?<= [.(a-zA-Z)]{3})\.(?!=(\n))", '', text)
+    text = re.sub(r"(?<= [a-zA-Z]{2})\.(?!=(\n))", '', text)
+
+    return text
+
 def displayResults(highest_key, highest_score, sen_map, sentences):
     print('Sentence key: ',highest_key,' Sentence score: ', highest_score)
     print(sen_map[highest_key])
     print(sen_map)
     print('------------------------------------')
-
-def returnresult(text, question, numofanswers):
-    question = question.lower()
-    text = text.lower()
-    quotelesstext = text.replace('“', "").replace('”',"")
-    wordweightdict = wordweight(text)
-    questiondoc = nlp(question)
-    sen_map = {}
-    doc = nlp(text)
-    sentences = [sent.string.strip() for sent in doc.sents]
-    for i in range(len(sentences)):
-       # tokened = nlp(sentences[i])
-       sen_map[i] = svoMatcher(sentences[i])
-    question_svo = questionAnalysis(questiondoc, subjects, objects)
-    highest_score = 0
-    highest_key = -1
-    svo_average = 0
-    scores = {}
-    for k in sen_map:
-       h = giveAnswerTwo(sen_map[k], questiondoc, text)
-       scores[k] = h
-       if h >= highest_score:
-           highest_score = h
-           highest_key = k
-    displayResults(highest_key, highest_score, sen_map, sentences)
-    print(question_svo)
-    sort_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-
-    if highest_score == 0:
-        return 'There was no match'
-    else:
-        returnlist = []
-        for i in range(numofanswers):
-            returnlist.append(sentences[sort_scores[i][0]])
-        print('1st: ', sort_scores[0], sentences[sort_scores[0][0]])
-        print('2nd: ', sort_scores[1], sentences[sort_scores[1][0]])
-        print('3rd: ', sort_scores[2], sentences[sort_scores[2][0]])
-        returnlist.append(sentences[sort_scores[i][0]])
-    return returnlist
+#First Version of Return Result
+# def returnresult(text, question, numofanswers):
+#     question = question.lower()
+#     text = text.lower()
+#     # quotelesstext = text.replace('“', "").replace('”',"")
+#     wordweightdict = wordweight(text)
+#     questiondoc = nlp(question)
+#     sen_map = {}
+#     doc = nlp(text)
+#     sentences = [sent.string.strip() for sent in doc.sents]
+#     for i in range(len(sentences)):
+#        # tokened = nlp(sentences[i])
+#        sen_map[i] = svoMatcher(sentences[i])
+#     question_svo = questionAnalysis(questiondoc, subjects, objects)
+#     highest_score = 0
+#     highest_key = -1
+#     svo_average = 0
+#     scores = {}
+#     for k in sen_map:
+#        h = giveAnswerTwo(sen_map[k], questiondoc, text)
+#        scores[k] = h
+#        if h >= highest_score:
+#            highest_score = h
+#            highest_key = k
+#     displayResults(highest_key, highest_score, sen_map, sentences)
+#     print(question_svo)
+#     sort_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+#
+#     if highest_score == 0:
+#         return 'There was no match'
+#     else:
+#         returnlist = []
+#         for i in range(numofanswers):
+#             returnlist.append(sentences[sort_scores[i][0]])
+#         print('1st: ', sort_scores[0], sentences[sort_scores[0][0]])
+#         print('2nd: ', sort_scores[1], sentences[sort_scores[1][0]])
+#         print('3rd: ', sort_scores[2], sentences[sort_scores[2][0]])
+#         returnlist.append(sentences[sort_scores[i][0]])
+#     return returnlist
 
 
 # print(returnresult(text2, question))
+def returnresult(text, question, numofanswers):
+    question = question.lower()
+    text = text.lower()
+
+    questiondoc = nlp(question)
+
+    text = remove_abbrev(text)
+
+    doc = nlp(text)
+    sentences = [sent.string.strip() for sent in doc.sents]
+    print(sentences)
+    scores = {}
+    for sentence in sentences:
+        scores[sentence.lower()] = spacyMatching.matching(question, sentence, wv)
+
+    sort_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+
+    if sort_scores[0][1] <= 0.5 or math.isnan(sort_scores[0][1]):
+        return scores, ['there was no match']
+    else:
+        returnlist = []
+        for i in range(numofanswers):
+            returnlist.append(sort_scores[i][0])
+
+        print('1st: ', sort_scores[0])
+        print('2nd: ', sort_scores[1])
+        print('3rd: ', sort_scores[2])
+    return scores, returnlist
