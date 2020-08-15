@@ -356,7 +356,7 @@ def remove_abbrev(text):
     temp = remove_dot_acronym(text)
     while temp != None:
         text = temp
-        
+
         temp = remove_dot_acronym(text)
 
     text = re.sub(r"(?<= [.(a-zA-Z)]{3})\.(?!=(\n))", '', text)

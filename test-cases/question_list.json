@@ -106,6 +106,41 @@
     "file" : "t5.txt",
     "question" : "Did the Marine Corps ban the confederate flag first?",
     "Answer" : "The Marine Corps this year banned the Confederate flag, and the Army was moving to do the same until Mr Esper intervened, saying that he wanted to issue uniform guidance across all services."
+  },
+  {
+    "name" : "t6-q1",
+    "file" : "t6.txt",
+    "question" : "What is causing the clinical trials of antibodies to take longer?",
+    "Answer" : "Researchers at a dozen clinical trial sites said that testing delays, staffing shortages, space constraints and reluctant patients were complicating their efforts to test monoclonal antibodies, man-made drugs that mimic the molecular soldiers made by the human immune system."
+  },
+  {
+    "name" : "t6-q2",
+    "file" : "t6.txt",
+    "question" : "Who is included in clinical trials done by pharmaceutical companies?",
+    "Answer" : "They are testing various groups of patients, such as those who are positive but not yet sick enough to be hospitalized, and those who have been exposed to the virus from someone already infected."
+  },
+  {
+    "name" : "t6-q3",
+    "file" : "t6.txt",
+    "question" : "Who is the director of research for the Arizona Clinical Trials?",
+    "Answer" : "Dr Anita Kohli, the director of research at Arizona Clinical Trials, a Regeneron trial site in Mesa, Ariz., said she got a rush of people wanting to volunteer for the outpatient study earlier this summer, when the outbreak was peaking in her state. “Our phones were ringing, probably off the hook the first two weeks,” she said."
+  },
+  {
+    "name" : "t7-q1",
+    "file" : "t7.txt",
+    "question" : "Why did American's European allies abstain to vote on the Embargo?",
+    "Answer" : "In explaining their decision to abstain from the vote on Friday, America’s European allies insisted that they, too, worried about an Iran with free access to dangerous weapons and expressed hope for further negotiations on possible restrictions."
+  },
+  {
+    "name" : "t7-q2",
+    "file" : "t7.txt",
+    "question" : "What was the Embargo’s designed to achieve?",
+    "Answer" : "The arms embargo was designed to prevent Iran from buying and selling weapons, including aircraft and tanks."
+  },
+  {
+    "name" : "t7-q3",
+    "file" : "t7.txt",
+    "question" : "What is the goal of Putin’s proposed summit?",
+    "Answer" : "The proposed summit, Mr. Putin said in a statement, should consist of the leaders of Security Council member states, plus the heads of Germany and Iran, and seek to establish a “comprehensive security architecture in the Persian Gulf.”"
   }
-
 ]
