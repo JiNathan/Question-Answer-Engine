@@ -142,5 +142,41 @@
     "file" : "t7.txt",
     "question" : "What is the goal of Putin’s proposed summit?",
     "Answer" : "The proposed summit, Mr. Putin said in a statement, should consist of the leaders of Security Council member states, plus the heads of Germany and Iran, and seek to establish a “comprehensive security architecture in the Persian Gulf.”"
+  },
+  {
+    "name" : "t8-q1",
+    "file" : "t8.txt",
+    "question" : "When did the White house issue a threat at the Democrat’s bill?",
+    "Answer" : "The White House issued a veto threat on Friday for House Democrats' proposed bill that would provide $25 billion to the United States Postal Service."
+  },
+  {
+    "name" : "t8-q2",
+    "file" : "t8.txt",
+    "question" : "Why does the White house oppose united States postal service funding?",
+    "Answer" : "The White House criticized the bill for spending funds arbitrarily without tying those funds to coronavirus relief or the election in a statement of administration policy released Friday evening."
+  },
+  {
+    "name" : "t8-q3",
+    "file" : "t8.txt",
+    "question" : "What is the likely outcome of this bill passing?",
+    "Answer" : "The bill is expected to pass on Saturday largely along party lines, with Democrats supporting it. House GOP leaders are actively pushing their members to oppose the legislation, and it is not likely to be considered in the Republican-controlled Senate."
+  },
+  {
+    "name" : "t9-q1",
+    "file" : "t9.txt",
+    "question" : "Is Kim Jong un’s decision to relieve some of his duties related to his health?",
+    "Answer" : "The South Korean NIS stressed that Kim's decision to delegate some responsibilities is not tied to any information regarding Kim's health, succession plans or his grip on power."
+  },
+  {
+    "name" : "t9-q2",
+    "file" : "t9.txt",
+    "question" : "What authority did Kim Jong un give Kim Yo Jong?",
+    "Answer" : "Kim Jong Un has reportedly given his sister, Kim Yo Jong, partial authority to oversee general state affairs in order to ease the North Korean leader's workload, according to South Korean intelligence."
+  },
+  {
+    "name" : "t9-q3",
+    "file" : "t9.txt",
+    "question" : "Who other than Kim Yo Jong have received more authority?",
+    "Answer" : "Other top-ranking officials in North Korea's government and ruling Workers' Party have taken on greater responsibilities as part of this supposed new push to alleviate the stresses on Kim Jong Un, who has been in power for nearly nine years, but also to potentially shield him from blame of government wrongdoing or incompetence."
   }
 ]
