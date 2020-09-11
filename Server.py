@@ -6,6 +6,7 @@ app = Flask(__name__,
            static_url_path='',
            static_folder='static')
 CORS(app)
+test = QuestionAnswerEngineTask.Engine()
 @app.route('/')
 def root():
    return app.send_static_file('index.html')
@@ -25,7 +26,8 @@ def get_result():
   question = request.args.get('Question')
   print(text)
   print(question)
-  res = QuestionAnswerEngineTask.returnresult(text, question)
+  res = test.returnresult(text, question, 3)
   return json.dumps(res)
 
-app.run(host='0.0.0.0')
+# app.run(host='0.0.0.0')
+app.run()

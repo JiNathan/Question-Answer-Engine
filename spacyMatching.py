@@ -5,7 +5,6 @@ import scipy
 import numpy as np
 from scipy import spatial
 
-nlp = spacy.load('en_core_web_lg')
 
 def avg_feature_vector(sentence, model, num_features, index2word_set):
     words = sentence.split()

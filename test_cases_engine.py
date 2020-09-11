@@ -2,7 +2,7 @@ import json
 import QuestionAnswerEngineTask
 
 question_list_file_path = "test-cases/question_list.json"
-
+test = QuestionAnswerEngineTask.Engine()
 with open(question_list_file_path, 'r', encoding="utf8") as file:
     data = file.read()
 
@@ -18,10 +18,10 @@ for q in question_list:
     with open(text_file_path, 'r', encoding="utf8") as file:
         text_data = file.read()
 
-    scores, res = QuestionAnswerEngineTask.returnresult(text_data, q['question'], 3)
+    scores, res = test.returnresult(text_data, q['question'], 3)
     print(q['question'])
 
-    provided_answer = QuestionAnswerEngineTask.remove_abbrev(q['Answer'].lower())
+    provided_answer = test.remove_abbrev(q['Answer'].lower())
 
     for answer in res:
         correct = False
