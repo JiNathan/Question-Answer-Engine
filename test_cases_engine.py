@@ -21,18 +21,18 @@ for q in question_list:
     scores, res = test.returnresult(text_data, q['question'], 3)
     print(q['question'])
 
-    provided_answer = test.remove_abbrev(q['Answer'].lower())
+    # provided_answer = test.remove_abbrev(q['Answer'].lower())
 
     for answer in res:
         correct = False
-        if answer.lower() in provided_answer or provided_answer in answer.lower():
+        if answer.lower() in q['Answer'].lower():
             correctAnswer += 1
             correct = True
             print('correct answer')
             break
-    if correct == False and provided_answer in scores:
-        print('incorrect:', scores[provided_answer])
-    print('correct answer: ', provided_answer)
+    if correct == False and q['Answer'] in scores:
+        print('incorrect:', scores[q['Answer']])
+    print('correct answer: ',q['Answer'])
     print(res)
     print()
 

@@ -26,7 +26,7 @@
   {
     "name" : "t2-q2",
     "file" : "t2.txt",
-    "question" : "What was Obama doing during the war on terror",
+    "question" : "What was Obama doing during the war on terror?",
     "Answer" : "there was no match"
   },
   {
@@ -39,25 +39,25 @@
     "name" : "t2.5-q1",
     "file" : "t25.txt",
     "question": "What percent of New York City population has the Coronavirus?",
-    "Answer" : "one of every five new york city residents tested positive for antibodies to the coronavirus, according to preliminary results described by gov. andrew m. cuomo on thursday that suggested that the virus had spread far more widely than known."
+    "Answer" : "In New York City, about 21 percent tested positive for coronavirus antibodies during the state survey."
   },
   {
     "name" : "t2.5-q2",
     "file" : "t25.txt",
     "question": "What kind of testing does New York City use?",
-    "Answer" : "hours before mr. cuomo’s presentation, a top health official in new york city expressed general skeptical about the utility of antibody tests — especially those on the private market — when it comes to questions of immunity and critical decisions over social distancing and reopening the economy."
+    "Answer" : "While the reliability of some early antibody tests has been widely questioned, researchers in New York have worked in recent weeks to develop and validate their own antibody tests, with federal approval."
   },
   {
     "name" : "t2.5-q3",
     "file" : "t25.txt",
     "question": "Who is New York City top official for disease control?",
-    "Answer" : "dir demetre c daskalakis, the city’s top official for dsease control, wrote in an email alert on Wednesday that such tests “may produce false negative or false positive results,” pointing to “significant voids” in using the science to pinpoint immunity."
+    "Answer" : "Dr. Demetre C. Daskalakis, the city’s top official for disease control, wrote in an email alert on Wednesday that such tests “may produce false negative or false positive results,” pointing to “significant voids” in using the science to pinpoint immunity."
   },
   {
     "name" : "t3-q1",
     "file" : "t3.txt",
     "question" : "Where did Obama receive the nobel peace prize?",
-    "Answer" : "president obama accepted the nobel peace prize during a ceremony thursday in norway, acknowledging the paradox of receiving the award as the us is embroiled in two wars, while maintaining that instruments of war have a role in preserving peace"
+    "Answer" : "president obama accepted the nobel peace prize during a ceremony thursday in norway, acknowledging the paradox of receiving the award as the u.s. is embroiled in two wars, while maintaining that instruments of war have a role in preserving peace."
   },
   {
     "name" : "t3-q2",
@@ -81,13 +81,13 @@
     "name" : "t4-q2",
     "file" : "t4.txt",
     "question" : "What was in Cuomos executive order?",
-    "Answer" : "Last month, Gov Andrew M Cuomo put in place an executive order that requires travelers from 22 states with high infection rates to quarantine for 14 days upon arrival."
+    "Answer" : "Last month, Gov. Andrew M. Cuomo put in place an executive order that requires travelers from 22 states with high infection rates to quarantine for 14 days upon arrival."
   },
   {
     "name" : "t4-q3",
     "file" : "t4.txt",
     "question" : "What activities does phase 4 not restore?",
-    "Answer" : "But concerned about the virus’s spreading more rapidly in dense and crowded New York City, Mr Cuomo said that Phase 4 of reopening in the city would not restore any additional indoor activities — even though other regions of the state further along in reopening have done so, for example, by allowing indoor dining at up to half capacity."
+    "Answer" : "But concerned about the virus’s spreading more rapidly in dense and crowded New York City, Mr. Cuomo said that Phase 4 of reopening in the city would not restore any additional indoor activities — even though other regions of the state further along in reopening have done so, for example, by allowing indoor dining at up to half capacity."
   },
   {
     "name" : "t5-q1",
@@ -99,13 +99,13 @@
     "name" : "t5-q2",
     "file" : "t5.txt",
     "question" : "What other kind of flags are not allowed by the new directive?",
-    "Answer" : "A Defense Department official said that the new directive meant that Black Lives Matter and LGBTQ flags would not be allowed, either."
+    "Answer" : "A Defense Department official said that the new directive meant that Black Lives Matter and L.G.B.T.Q. flags would not be allowed, either."
   },
   {
     "name" : "t5-q3",
     "file" : "t5.txt",
     "question" : "Did the Marine Corps ban the confederate flag first?",
-    "Answer" : "The Marine Corps this year banned the Confederate flag, and the Army was moving to do the same until Mr Esper intervened, saying that he wanted to issue uniform guidance across all services."
+    "Answer" : "The Marine Corps this year banned the Confederate flag, and the Army was moving to do the same until Mr. Esper intervened, saying that he wanted to issue uniform guidance across all services."
   },
   {
     "name" : "t6-q1",
@@ -123,7 +123,7 @@
     "name" : "t6-q3",
     "file" : "t6.txt",
     "question" : "Who is the director of research for the Arizona Clinical Trials?",
-    "Answer" : "Dr Anita Kohli, the director of research at Arizona Clinical Trials, a Regeneron trial site in Mesa, Ariz., said she got a rush of people wanting to volunteer for the outpatient study earlier this summer, when the outbreak was peaking in her state. “Our phones were ringing, probably off the hook the first two weeks,” she said."
+    "Answer" : "Dr. Anita Kohli, the director of research at Arizona Clinical Trials, a Regeneron trial site in Mesa, Ariz., said she got a rush of people wanting to volunteer for the outpatient study earlier this summer, when the outbreak was peaking in her state."
   },
   {
     "name" : "t7-q1",
@@ -159,7 +159,7 @@
     "name" : "t8-q3",
     "file" : "t8.txt",
     "question" : "What is the likely outcome of this bill passing?",
-    "Answer" : "The bill is expected to pass on Saturday largely along party lines, with Democrats supporting it. House GOP leaders are actively pushing their members to oppose the legislation, and it is not likely to be considered in the Republican-controlled Senate."
+    "Answer" : "The bill is expected to pass on Saturday largely along party lines, with Democrats supporting it."
   },
   {
     "name" : "t9-q1",
@@ -171,7 +171,7 @@
     "name" : "t9-q2",
     "file" : "t9.txt",
     "question" : "What authority did Kim Jong un give Kim Yo Jong?",
-    "Answer" : "Kim Jong Un has reportedly given his sister, Kim Yo Jong, partial authority to oversee general state affairs in order to ease the North Korean leader's workload, according to South Korean intelligence."
+    "Answer" : "Kim Jong Un has reportedly given his sister, Kim Yo Jong, partial authority to oversee \"general state affairs\" in order to ease the North Korean leader's workload, according to South Korean intelligence."
   },
   {
     "name" : "t9-q3",
