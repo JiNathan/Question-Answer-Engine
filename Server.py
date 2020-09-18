@@ -27,7 +27,10 @@ def get_result():
   print(text)
   print(question)
   res = test.returnresult(text, question, 3)
-  return json.dumps(res)
+  res = {i:answer for i, answer in enumerate (res[1])}
+  print('res:',res)
+  res= json.dumps(res)
+  return json.loads(res)
 
 # app.run(host='0.0.0.0')
 app.run()

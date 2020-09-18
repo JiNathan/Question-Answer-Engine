@@ -442,7 +442,7 @@ small,
 mark,
 .mark {
   padding: 0.2em;
-  background-color: #fcf8e3;
+  background-color: #ffff00;
 }
 
 .list-unstyled {
@@ -9846,4 +9846,8 @@ form .row:first-child .floating-label-form-group {
 
 .copyright {
   background-color: #1a252f;
+}
+
+.highlight {
+  background-color: #ffff00;
 }
