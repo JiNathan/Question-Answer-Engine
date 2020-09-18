@@ -7,10 +7,13 @@ from scipy import spatial
 
 
 def avg_feature_vector(sentence, model, num_features, index2word_set):
-    words = sentence.split()
-    feature_vec = np.zeros((num_features, ), dtype='float32')
+    stop_words = ['a', 'an', 'the']
+    # words = sentence.split()
+    feature_vec = np.zeros((num_features,), dtype='float32')
     n_words = 0
+    words = [token.text for token in sentence if not token.is_stop]
     for word in words:
+        # if word in index2word_set and not word in stop_words:
         if word in index2word_set:
             n_words += 1
             feature_vec = np.add(feature_vec, model[word])
