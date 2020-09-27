@@ -32,5 +32,5 @@ def get_result():
   res= json.dumps(res)
   return json.loads(res)
 
-# app.run(host='0.0.0.0')
-app.run()
+app.run(host='0.0.0.0')
+# app.run()
